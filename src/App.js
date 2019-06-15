@@ -1,21 +1,32 @@
 import React, {Component} from 'react';
+import TopNavigation from './components/navigation/navigation';
+import { Route } from 'react-router-dom';
+import LoginForm from './containers/login/loginForm';
+import SignupForm from './containers/signup/signup';
 import './App.css';
 
 class App extends Component{
+  state = {
+    isLoggedIn: false
+  }
   render(){
     return(
       
-        <div className="container">
-          <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <a className="navbar-brand" href="#">Navbar</a>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              <p>test</p>
-              <p>pest</p>
+        <div className="container">        
+          <TopNavigation currentState={this.state}/>
+
+          <div className="row">
+            <div className="MainContent">
+
+               {/* user clicked on login */}
+               <Route path="/login" exact component = {LoginForm}/>
+
+                {/* user clicked on signup */}
+               <Route path="/signup" exact component = {SignupForm}/>
+
             </div>
-          </nav>
+          </div>
+
         </div>
       
     )
