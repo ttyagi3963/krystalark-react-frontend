@@ -74,6 +74,9 @@ class loginForm extends Component{
                   );
                   localStorage.setItem('expiryDate', expiryDate.toISOString());
                   this.setAutoLogout(remainingMilliseconds);
+                 
+                  window.location.href="/dashboard"
+                  
 
             })
             .catch(err => {
