@@ -7,7 +7,8 @@ const navItems =[
     
     { id: 'login', text: 'Login', link: '/login', auth: false},
     { id: 'signup', text: 'Signup', link: '/signup', auth: false },
-    { id: 'beneficiaryList', text: 'Get Beneficiary List', link: '/getBeneficiaryList', auth: true }
+    { id: 'beneficiaryList', text: 'Get Beneficiary List', link: '/getBeneficiaryList', auth: true },
+    { id: 'createBeneficiary', text: 'Create Beneficiary', link: '/createBeneficiary', auth: true }
 ]
 const navigation = (props) =>[
    

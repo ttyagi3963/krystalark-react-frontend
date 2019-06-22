@@ -3,9 +3,10 @@ import MainNavigation from './components/navigation/mainNavigation';
 import { BrowserRouter, Route, Redirect, Switch, withRouter } from 'react-router-dom';
 import LoginForm from './containers/login/loginForm';
 import SignupForm from './containers/signup/signup';
-import Dashboard from './containers/dashboard/dashboard'
-
-import BeneficiaryList from './containers/beneficiary/beneficiaryList'
+import Dashboard from './containers/dashboard/dashboard';
+import CreateBeneficiary from './containers/beneficiary/createBeneficiary/createBeneficiary';
+import BeneficiaryList from './containers/beneficiary/beneficiaryList';
+import BeneficiaryInfo from './containers/beneficiary/beneficiaryInfo/beneficiaryInfo';
 
 import './App.css';
 
@@ -76,6 +77,17 @@ class App extends Component{
                 path="/getBeneficiaryList" 
                 exact 
                 render = { props => (<BeneficiaryList token={this.state.token}></BeneficiaryList>)}>
+             </Route>
+
+             <Route 
+                path="/createBeneficiary" 
+                exact 
+                render = { props => (<CreateBeneficiary token={this.state.token}></CreateBeneficiary>)}>
+             </Route>
+             <Route 
+                path="/getBeneficiaryInfo/:bId" 
+                exact
+                render = { props => (<BeneficiaryInfo {...props} token={this.state.token}></BeneficiaryInfo>)}>
              </Route>
         </Switch>
       )

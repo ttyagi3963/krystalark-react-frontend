@@ -1,6 +1,8 @@
 import React , { Component, Fragment} from 'react';
 import Beneficiary from './beneficiary';
+
 import './beneficiaryList.css'
+
 
 class BeneficiaryList extends Component {
     state = {
