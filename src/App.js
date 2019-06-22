@@ -12,9 +12,7 @@ import './App.css';
 
 class App extends Component{
   state = {
-    isLoggedIn: false,
-    isAuth: false,
-    redirect: false
+    isAuth: false
   }
   componentDidMount(){
     const token = localStorage.getItem('token');    
