@@ -1,11 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import Profile from '../profile/profile';
 
 class BeneficiaryInfo extends Component{
-    state = {}
+    _isMounted = false;
 
-    componentWillMount(){
+    state = {
+        
+    }
+    componentDidMount() {
+        this._isMounted = true;
         const bId = this.props.match.params.bId
-        fetch('http://localhost:8080/getBeneficiaryInfo/'+bId , {
+        fetch('http://localhost:8080/beneficiary/'+bId , {
             headers:{
                 authorization: ' Bearer '+this.props.token
             }
@@ -14,7 +19,12 @@ class BeneficiaryInfo extends Component{
             return result.json();
         })
         .then(resData => {
-            console.log(resData)
+           
+            if(this._isMounted){
+               console.log(resData)
+                this.setState({profileData:resData})
+            }
+           
         })
         .catch( err => {
             console.log("error = ", err)
@@ -22,11 +32,24 @@ class BeneficiaryInfo extends Component{
 
     }
 
-    render(){
-        return(
-            <div>
+    
+    componentWillUnmount() {
+        this._isMounted = false;
+        
+      }
 
-            </div>
+    render(){
+        let profile= null;
+        
+        return(
+           <div className="row UserProfile">
+               {
+                   this.state && this.state.profileData?
+                   <Profile  profileData = {this.state.profileData} token={this.props.token}></Profile>:''
+               }
+              
+           </div>
+            
         )
     }
 }
