@@ -7,6 +7,7 @@ import Dashboard from './containers/dashboard/dashboard';
 import CreateBeneficiary from './containers/beneficiary/createBeneficiary/createBeneficiary';
 import BeneficiaryList from './containers/beneficiary/beneficiaryList';
 import BeneficiaryInfo from './containers/beneficiary/beneficiaryInfo/beneficiaryInfo';
+import CreateMessage from './containers/messages/forWho/forWho'
 
 import './App.css';
 
@@ -46,7 +47,11 @@ class App extends Component{
     }, milliseconds);
   };
 
+  handleMessageStates =(step, data) =>{
+    console.log("step =",step);
+    console.log("data =",data);
 
+  }
   render(){
     
     let routes = (
@@ -87,6 +92,12 @@ class App extends Component{
                 exact
                 render = { props => (<BeneficiaryInfo {...props} token={this.state.token}></BeneficiaryInfo>)}>
              </Route>
+
+             <Route 
+                path="/createMessage" 
+                exact
+                render = { props => (<CreateMessage {...props} token={this.state.token} storeMessageStates={this.handleMessageStates}></CreateMessage>)}></Route>
+
         </Switch>
       )
   }
