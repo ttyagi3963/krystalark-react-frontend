@@ -140,7 +140,7 @@ class ForWho extends Component{
             case 'messageDelivery':
                         this.setState({"delivery":data})
                         setTimeout(()=>{                           
-                            document.getElementById("messageFrequency").className="animated fadeIn"
+                            document.getElementById("messageFrequencyDate").className="animated fadeIn"
                             
                            },
                        500
@@ -267,7 +267,7 @@ class ForWho extends Component{
   
         </div>
 
-        <div id="MessageDates">
+        <div id="MessageDates" className="hidden">
             this is messahe form
             </div>            
 
