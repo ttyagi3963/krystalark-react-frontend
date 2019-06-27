@@ -48,8 +48,19 @@ class App extends Component{
   };
 
   handleMessageStates =(step, data) =>{
-    console.log("step =",step);
-    console.log("data =",data);
+    switch(step){
+      case 'forWho': 
+              this.setState({"forWho":data}, function(){
+                console.log(this.state)
+              })
+      break;
+      case 'messageCategory': 
+              this.setState({"messageType":data}, function(){
+                console.log(this.state)
+              })
+      break
+    }
+   
 
   }
   render(){
