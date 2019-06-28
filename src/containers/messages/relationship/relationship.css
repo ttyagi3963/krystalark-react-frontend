@@ -8,7 +8,21 @@
 .MessageContainer > div{
     width:100%
 }
+#relationship{
+    margin-top:60px;
+    
+}
 
+#relationship h2{
+    margin-bottom:40px
+}
+.SelectedBox{
+    box-shadow: 2px 2px 2px #e8e8e8;
+    border: 1px solid #1890ff;
+}
+.ant-list-item{
+    cursor: pointer;
+}
 
 .animated {
   
@@ -42,35 +56,9 @@
     0% {opacity: 0;}
     100% {opacity: 1;}
  }
- .hidden{
-     display: none
-}
 
 
 .fadeIn{
     -webkit-animation-name: fadeIn;
     animation-name: fadeIn;
-}
-
-#relationship,#relationshipMessage, #messageType,#messageDeliveryWhen,#messageFrequency{
-    position:absolute;
-    margin-top:20px;
-    padding-top:20px;
-    
-}
-#relationshipMessage input{
- width:200px
-}
-#relationshipMessage > div{
-    
-}
-.ant-list-item{
-    cursor: pointer;
-}
-.MessageContainer{
-    padding-top:30px
-}
-.SelectedBox{
-    box-shadow: 2px 2px 2px #e8e8e8;
-    border: 1px solid #1890ff;
 }

@@ -7,7 +7,9 @@ import Dashboard from './containers/dashboard/dashboard';
 import CreateBeneficiary from './containers/beneficiary/createBeneficiary/createBeneficiary';
 import BeneficiaryList from './containers/beneficiary/beneficiaryList';
 import BeneficiaryInfo from './containers/beneficiary/beneficiaryInfo/beneficiaryInfo';
-import CreateMessage from './containers/messages/forWho/forWho'
+import Relationship from './containers/messages/relationship/relationship';
+import MessageType from './containers/messages/messageType/messageType';
+import MessageSendWhen from './containers/messages/schedule/scheduleWhen'
 
 import './App.css';
 
@@ -49,15 +51,33 @@ class App extends Component{
 
   handleMessageStates =(step, data) =>{
     switch(step){
-      case 'forWho': 
-              this.setState({"forWho":data}, function(){
+      case 'relationship': 
+              this.setState({"relationship":data}, function(){
                 console.log(this.state)
               })
       break;
-      case 'messageCategory': 
+      case 'messageType': 
               this.setState({"messageType":data}, function(){
                 console.log(this.state)
               })
+      break;
+
+      case 'messageDeliveryWhen': 
+              this.setState({"messageDeliveryWhen":data}, function(){
+                console.log(this.state)
+              })
+      break;
+
+      case 'messageFrequency': 
+        this.setState({"messageFrequency":data}, function(){
+          console.log(this.state)
+        })
+      break;
+
+      case 'messageFrequencyDate': 
+        this.setState({"messageFrequencyDate":data}, function(){
+          console.log(this.state)
+        })
       break
     }
    
@@ -105,9 +125,19 @@ class App extends Component{
              </Route>
 
              <Route 
-                path="/createMessage" 
+                path="/createMessage/relationship" 
                 exact
-                render = { props => (<CreateMessage {...props} token={this.state.token} storeMessageStates={this.handleMessageStates}></CreateMessage>)}></Route>
+                render = { props => (<Relationship {...props} token={this.state.token} storeMessageStates={this.handleMessageStates}></Relationship>)}></Route>
+
+              <Route 
+                path="/createMessage/messageType" 
+                exact
+                render = { props => (<MessageType {...props} token={this.state.token} storeMessageStates={this.handleMessageStates}></MessageType>)}></Route>
+
+              <Route 
+                path="/createMessage/when" 
+                exact
+                render = { props => (<MessageSendWhen {...props} token={this.state.token} storeMessageStates={this.handleMessageStates}></MessageSendWhen>)}></Route>
 
         </Switch>
       )

@@ -1,15 +1,17 @@
 import React , { Component, Fragment } from 'react';
 import {List, Card} from 'antd';
-import { Steps, Button, message } from 'antd/';
+import { Steps, Button, message, DatePicker } from 'antd/';
+import {Field, formInputData, formValidation} from 'reactjs-input-validator';
 import 'antd/dist/antd.css'
 import './forWho.css';
 
 
 const { Step } = Steps;
 
-
- 
-  
+const { MonthPicker, RangePicker } = DatePicker;
+const dateFormat = 'MM/DD/YYYY';
+const monthFormat = 'MM/YYYY'; 
+const dateFormatList = ['MM/DD/YYYY', 'MM/DD/YY'];  
 
 class ForWho extends Component{
 
@@ -87,11 +89,7 @@ class ForWho extends Component{
             {
               title:"One Time Only",
               id: "Freq-2"
-          },
-          {
-              title:"At a future Date",
-              id: "Freq-3"
-          }
+            }
         ]
         
     }
@@ -115,51 +113,79 @@ class ForWho extends Component{
 
         switch(parent){
            
-            case 'categories':
-                    this.setState({"for":data})
-                    this.props.storeMessageStates("forWho",data)
+            case 'relationship':
+                    this.setState({"relationship":data})
+                    this.props.storeMessageStates("relationship",data)
                     setTimeout(()=>{                       
-                        document.getElementById("messageCategory").className="animated fadeIn"
+                        document.getElementById("relationshipMessage").className="animated fadeIn"
                         this.next();
                        },
-                   500
+                  500
                    )
                    break;
 
-            case 'messageCategory':
-                    this.setState({"mCat":data})
-                    this.props.storeMessageStates("messageCategory",data)  
+            case 'messageType':
+                    this.setState({"messageType":data})
+                    this.props.storeMessageStates("messageType",data)  
                     setTimeout(()=>{                      
-                        document.getElementById("messageDelivery").className="animated fadeIn"
+                        document.getElementById("messageDeliveryWhen").className="animated fadeIn"
                         this.next();
                        },
                    500
                    )
                    break;
 
-            case 'messageDelivery':
-                        this.setState({"delivery":data})
-                        setTimeout(()=>{                           
-                            document.getElementById("messageFrequencyDate").className="animated fadeIn"
-                            
+            case 'messageDeliveryWhen':
+                let nextScreen = null;
+
+                        this.setState({"messageDeliveryWhen":data},function(){
+                            if(this.state.messageDeliveryWhen === 'Immediately After My Passing') 
+                            {
+                                nextScreen = "message"
+                            }  
+                            else{
+                                nextScreen = "messageFrequency"
+                               
+                            }                   
+                        })
+                        this.props.storeMessageStates("messageDeliveryWhen",data)  
+                        setTimeout(()=>{     
+                            document.getElementById(nextScreen).className="animated fadeIn"
                            },
                        500
                        )
                        break;
 
             case 'messageFrequency':
-                    this.setState({"frequency":data})
-                            setTimeout(()=>{                               
-                                document.getElementById("messageFrequencyDate").className="animated fadeIn"
+                let typeOfCalendar=null;
+                this.props.storeMessageStates("messageFrequency",data)  
+                
+                    this.setState({"messageFrequency":data}, function(){
+                            if(this.state.messageFrequency =="One Time Only"){
+                                 typeOfCalendar = "oneTimeonlyDate"
+                            }
+                            else{
                                 
-                               },
-                           500
-                           )
-                           break;
+                            }
+                    })
+                    setTimeout(()=>{                               
+                       document.getElementById(typeOfCalendar).className="animated fadeIn"
+                                
+                      },
+                       500
+                      )
+             break;
               
         }
       
         
+    }
+
+    onDateChange =(date, dateString) => {
+        this.props.storeMessageStates("oneTimeDate",dateString)  
+        this.setState({"messageFrequency":dateString}, function(){
+              console.log(this.state)
+            })
     }
 
     
@@ -178,8 +204,8 @@ class ForWho extends Component{
 
             </Steps>
 
-            <div id="categories" className="animated" >
-                <h2>How are you related to the reciever of your message?</h2>
+            <div id="relationship" className="animated" >
+                <h2>Who are you scheduling this message for?</h2>
                 <List
                     grid={{
                         gutter: 16,
@@ -194,13 +220,33 @@ class ForWho extends Component{
                     dataSource={this.state.data}
                     renderItem={item => (
                         <List.Item id={item.id}>
-                            <Card id={item.id+"Card"} title={item.title} onClick={(event) => this.createMessageHandler(item.title,'categories',event)}>send to {item.title}</Card>
+                            <Card id={item.id+"Card"} title={item.title} onClick={(event) => this.createMessageHandler(item.title,'relationship',event)}>send to {item.title}</Card>
                       </List.Item>
                     )}
                 />
       
             </div>
-            <div id="messageCategory" className="hidden" >
+            <div id="relationshipMessage" className="hidden">
+               <h1>Perfect!!! Lets get started.</h1>     
+               <h4>Whats is ur {this.state.relationship}'s Full Name?</h4>    
+               <div>
+               <div className="form-group">
+                       <Field
+                            name="name"
+                            id = "name"
+                            label = "Full name"
+                            type = "text"
+                            placeholder = "Full name"
+                            onChange = {this.handleChange}
+                            value = {this.state.data.name}
+                            shouldValidateInputs = {this.state.shouldValidateInputs}
+                            required
+                            requiredErrMsg = "Full name is required"
+                        />
+                   </div>        
+               </div>
+            </div>
+            <div id="messageType" className="hidden" >
             <h2>Please select the type of message you are composing</h2>
             <List
                 grid={{
@@ -216,13 +262,13 @@ class ForWho extends Component{
                 dataSource={this.state.messageType}
                 renderItem={item => (
                     <List.Item>
-                        <Card title={item.title} onClick={(event) => this.createMessageHandler(item.title,'messageCategory',event)}>Select</Card>
+                        <Card title={item.title} onClick={(event) => this.createMessageHandler(item.title,'messageType',event)}>Select</Card>
                   </List.Item>
                 )}
             />
   
         </div>
-        <div id="messageDelivery" className="hidden" >
+        <div id="messageDeliveryWhen" className="hidden" >
             <h2>When Should the message be sent?</h2>
             <List
                 grid={{
@@ -238,13 +284,14 @@ class ForWho extends Component{
                 dataSource={this.state.messageDelivery}
                 renderItem={item => (
                     <List.Item>
-                        <Card title={item.title} onClick={(event) => this.createMessageHandler(item.title,'messageDelivery',event)}>Select</Card>
+                        <Card title={item.title} onClick={(event) => this.createMessageHandler(item.title,'messageDeliveryWhen',event)}>Select</Card>
                   </List.Item>
                 )}
             />
   
         </div>
-        <div id="messageFrequencyDate" className="hidden" >
+        {}
+        <div id="messageFrequency" className="hidden" >
             <h2>How many times should this message be delivered?</h2>
             <List
                 grid={{
@@ -267,9 +314,9 @@ class ForWho extends Component{
   
         </div>
 
-        <div id="MessageDates" className="hidden">
-            this is messahe form
-            </div>            
+        <div id="oneTimeonlyDate" className="hidden">
+        <DatePicker onChange={this.onDateChange} format = {dateFormat} />
+        </div>            
 
         </div>
         )
