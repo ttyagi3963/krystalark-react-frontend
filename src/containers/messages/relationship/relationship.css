@@ -23,6 +23,9 @@
 .ant-list-item{
     cursor: pointer;
 }
+#addName .form-group{
+    text-align:left;
+}
 
 .animated {
   

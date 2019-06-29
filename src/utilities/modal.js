@@ -2,30 +2,39 @@ import React, {Component,Fragment} from 'react';
 import './modal.css'
 
 const popModal =(props)=>{
-    let styles = props.modalVisible
-      ? { display: "block" }
-      : { display: "none" };
+   
     return(
-        <div id={props.modalId} 
-           
-            className={`modal fade popModal ${props.modalVisible ? 'show' : ''}`} 
+
+        <div className="modal fade" 
+            id={props.modalId} 
+            tabIndex="-1" 
             role="dialog" 
-            style={styles}>
-                <div className="modal-dialog modal-dialog-centered" role="document">
-                <div className="modal-content">
+            aria-labelledby="exampleModalLabel" 
+            aria-hidden="true"
+            data-backdrop={props.disableBackClick}
+            >
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">{props.heading}</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
+                            <h3 className="modal-title" id="exampleModalLabel">{props.heading}</h3>
+                            {props.showClose === 1 ?
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                :
+                                null
+                            }
+                        
                         </div>
                         <div className="modal-body">
                             {props.children}
                         </div>
-                        
-                        </div>
+                    
                     </div>
+            </div>
         </div>
+
+        
     )
 }
 export default popModal;
