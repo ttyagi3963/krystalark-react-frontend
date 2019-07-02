@@ -23,7 +23,7 @@
 .ant-list-item{
     cursor: pointer;
 }
-#frequency{
+#frequency,#frequency-oneTimeOnly,#frequency-recurring{
     margin-top:40px
 }
 
@@ -46,4 +46,10 @@
 
  .ant-radio-checked .ant-radio-inner {
     border-color: #1890ff;
+}
+
+.dateClass{
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 500;
 }
