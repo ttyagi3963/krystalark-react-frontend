@@ -1,15 +1,54 @@
 import React, { Component } from 'react';
 import VideoRecorder from 'react-video-recorder'
+import Download from 'downloadjs';
+import './recordVideo.css';
 
 class RecordVideo extends Component{
- 
+    state ={
+        showUploadForm:false,
+        fileObject:''
+
+    }
     stopRecordingHandler =(blob)=>{
+        this.setState({showUploadForm: true})
         var fileName = this.getFileName('webm');
         let video = URL.createObjectURL(blob);
         var fileObject = new File([blob], fileName, {
             type: 'video/webm'
         });
+        this.setState({fileObject: fileObject})
+        // document.getElementById("fileObject").value=fileObject
         //console.log(fileObject)
+        //Download(blob, fileName, 'video/webm')
+    }
+
+    saveVideoHandler = (event) =>{
+        event.preventDefault();
+        let formData = new FormData();
+            formData.append('fileObject',this.state.fileObject);
+         
+        fetch('http://localhost:8080/message/uploadMessageFile',{
+            method:'POST',
+            headers:{
+                'authorization': ' Bearer '+this.props.token,
+               
+            },
+            body: formData
+        })
+        .then(res =>{
+            return res.json();
+        })
+        .then(resData => {
+            console.log(resData)
+            
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+    }
+
+    discardVideoHandler=()=>{
+        this.props.history.push('/message/recordvideo')
     }
 
     getRandomString=() => {
@@ -38,10 +77,38 @@ class RecordVideo extends Component{
     
 
   render(){
+    let buttonClass = ['btn', 'btn-primary', 'btn-lg']
+    
+    let formClass= ['hideForm', 'ButtonControls']
+    if(this.state.showUploadForm){
+        formClass = ['showForm', 'ButtonControls']
+    }
+                        
+    
       return(
-        <VideoRecorder 
-        onRecordingComplete={(blob) =>this.stopRecordingHandler(blob)}
-        />
+          <div className="col-12 VideoContainer">
+               <VideoRecorder 
+                    onRecordingComplete={(blob) =>this.stopRecordingHandler(blob)}
+                    />
+
+                  <div className={formClass.join(' ')}>
+                      <form action="/upload" encType="multipart/form-data" method="POST" onSubmit={this.saveVideoHandler}>
+                      
+                      <input type="hidden" name="fileObject" id="fileObject"></input>
+                      
+                            <button 
+                            type="submit" 
+                            className={buttonClass.join(' ')}
+                            onClick={this.saveVideoHandler}
+                            >
+                               Save and Continue
+                            </button>
+
+                      </form>
+                         
+                      </div>  
+          </div>
+       
         
       )
   }
