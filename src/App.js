@@ -11,8 +11,9 @@ import Relationship from './containers/messages/relationship/relationship';
 import MessageType from './containers/messages/messageType/messageType';
 import MessageSendWhen from './containers/messages/schedule/scheduleWhen'
 import RecordVideo from './containers/messages/recordVideo/recordVideo'
-
+import WrittenMessage from './containers/messages/writtenMessage/writtenMessage'
 import './App.css';
+
 
 class App extends Component{
   state = {
@@ -140,10 +141,15 @@ class App extends Component{
                 exact
                 render = { props => (<MessageSendWhen {...props} token={this.state.token} storeMessageStates={this.handleMessageStates}></MessageSendWhen>)}></Route>
 
-    <Route 
+              <Route 
                 path="/message/recordvideo" 
                 exact
                 render = { props => (<RecordVideo {...props} token={this.state.token} storeMessageStates={this.handleMessageStates}></RecordVideo>)}></Route>
+
+              <Route 
+                path="/message/writtenMessage" 
+                exact
+                render = { props => (<WrittenMessage {...props} token={this.state.token} storeMessageStates={this.handleMessageStates}></WrittenMessage>)}></Route>
 
         </Switch>
       )

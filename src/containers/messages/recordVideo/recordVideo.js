@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import VideoRecorder from 'react-video-recorder'
-import Download from 'downloadjs';
+
 import './recordVideo.css';
 
 class RecordVideo extends Component{
@@ -17,9 +17,7 @@ class RecordVideo extends Component{
             type: 'video/webm'
         });
         this.setState({fileObject: fileObject})
-        // document.getElementById("fileObject").value=fileObject
-        //console.log(fileObject)
-        //Download(blob, fileName, 'video/webm')
+       
     }
 
     saveVideoHandler = (event) =>{
