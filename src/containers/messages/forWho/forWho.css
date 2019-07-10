@@ -61,9 +61,7 @@
 #relationshipMessage input{
  width:200px
 }
-#relationshipMessage > div{
-    
-}
+
 .ant-list-item{
     cursor: pointer;
 }

@@ -13,6 +13,7 @@ class Profile extends Component{
     
 
     addPhoto=(event)=>{
+        alert("iam herre")
         event.preventDefault();
         this.setState({modalVisible: true})
     }
@@ -25,7 +26,7 @@ class Profile extends Component{
     uploadAvatarHandler = (event) =>{
         event.preventDefault();
         let formData = new FormData();
-            formData.append('image',this.state.postData);
+            formData.append('fileObject',this.state.postData);
             formData.append('bid',document.getElementById('bid').value)
 
         fetch('http://localhost:8080/beneficiary/uploadAvatar',{
