@@ -81,7 +81,7 @@ class MessageType extends Component{
           console.log("it will be delivered "+frequency+", "+ messageDeliveryWhen+ " on "+oneTimeOnlyDate);
 
           let formData = new FormData();
-            formData.append('fullName ',fullName);
+            formData.append('fullName',fullName);
             formData.append('messageType',messageType);
             formData.append('relationship',relationship);
             formData.append('messageDeliveryWhen',messageDeliveryWhen);
@@ -89,9 +89,21 @@ class MessageType extends Component{
             formData.append('oneTimeOnlyDate',oneTimeOnlyDate);
             formData.append('recurringDate',recurringDate);
 
-          fetch("http://localhost:8080/createMessage",{
+          fetch("http://localhost:8080/messages/createMessage",{
                 method: 'POST',
-                
+                headers:{
+                    'authorization': ' Bearer '+this.props.token,
+                },
+                body: formData
+          })
+          .then(result => {
+             return result.json()
+          })
+          .then(resData => {
+
+          })
+          .catch(err => {
+            console.log(err)
           })
 
       }
