@@ -89,7 +89,7 @@ class MessageType extends Component{
             formData.append('oneTimeOnlyDate',oneTimeOnlyDate);
             formData.append('recurringDate',recurringDate);
 
-          fetch("http://localhost:8080/createMessage",{
+          fetch("http://localhost:8080/messages/createMessage",{
                 method: 'POST',
                 headers:{
                     'authorization': ' Bearer '+this.props.token,
