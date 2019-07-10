@@ -64,11 +64,20 @@ class Relationship extends Component{
    };
    onSubmitHandler =(event)=>{
     event.preventDefault();
-    const firstName = document.getElementById("firstName").value;
-    const mi = document.getElementById("middleInitial").value;
-    const lastName = document.getElementById("lastName").value;
+    const firstName = (document.getElementById("firstName").value).trim();
+    const mi = (document.getElementById("middleInitial").value).trim();
+    const lastName = (document.getElementById("lastName").value).trim();
     console.log(firstName+" "+mi+" "+lastName)
-    localStorage.setItem("fullName",firstName+" "+mi+" "+lastName)
+    const bName=""
+    alert(mi.length)
+    if(mi.length>0 && mi !==" ")
+    {
+      localStorage.setItem("bName",firstName+lastName)
+    }
+    else{
+      localStorage.setItem("bName",firstName+lastName)
+    }
+    
     $('#addName').modal('hide')
     this.props.history.push('/createMessage/messageType')
    }

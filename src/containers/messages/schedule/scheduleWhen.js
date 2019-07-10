@@ -69,7 +69,7 @@ class MessageType extends Component{
       };
 
       messageMetaDataHandler = e =>{
-          const fullName = localStorage.getItem('fullName');
+          const bName = localStorage.getItem('bName');
           const messageType = localStorage.getItem('messageType');
           const relationship = localStorage.getItem('relationship');
           const messageDeliveryWhen = localStorage.getItem('messageDeliveryWhen');
@@ -77,11 +77,11 @@ class MessageType extends Component{
           const oneTimeOnlyDate = localStorage.getItem('oneTimeOnlyDate');
           const recurringDate = localStorage.getItem('recurring');
 
-          console.log("you are scheduling a "+ messageType +" delivery for your "+relationship+", "+fullName+".")
+          console.log("you are scheduling a "+ messageType +" delivery for your "+relationship+", "+bName+".")
           console.log("it will be delivered "+frequency+", "+ messageDeliveryWhen+ " on "+oneTimeOnlyDate);
 
           let formData = new FormData();
-            formData.append('fullName ',fullName);
+            formData.append('bName ',bName);
             formData.append('messageType',messageType);
             formData.append('relationship',relationship);
             formData.append('messageDeliveryWhen',messageDeliveryWhen);
@@ -91,14 +91,27 @@ class MessageType extends Component{
 
           fetch("http://localhost:8080/createMessage",{
                 method: 'POST',
+                headers:{
+                    'authorization': ' Bearer '+this.props.token,
+                   
+                },
+                body: formData
                 
+          }).then(data =>{
+              return data.json()
+          }).then(resData=>{
+              console.log(resData)
+          }).catch(err =>{
+              console.log("error "+err)
           })
 
       }
 
     render(){
         let buttonClass = ['btn', 'btn-primary', 'btn-lg']
-        if(!this.state.dateRawValue || !this.state.MMDD){
+       
+        if(!this.state.dateRawValue && !this.state.MMDD){
+           
             buttonClass =  ['btn', 'btn-primary', 'btn-lg', 'disabled']
                             
         }
@@ -163,10 +176,10 @@ class MessageType extends Component{
                    
                     <p><strong> Please select the date of message delivery to {localStorage.getItem("fullName")}</strong></p>
                     <div className="form-group">
-                        <label htmlFor ="oneTimeOnlyDate">Please enter the date (MM/DD/YYYY)&nbsp;&nbsp;</label>
+                        <label htmlFor ="oneTimeOnlyDate">Please enter the date (MM/DD)&nbsp;&nbsp;</label>
                     <Cleave
-                            placeholder="MM/DD/YYYY"
-                            options={{date: true, delimiters: ['/'],datePattern: ['m','d', 'Y']}}
+                            placeholder="MM/DD"
+                            options={{date: true, delimiters: ['/'],datePattern: ['m','d']}}
                             name="oneTimeOnlyDate"
                             id="oneTimeOnlyDate"
                             className="dateClass"                        
