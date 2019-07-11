@@ -67,15 +67,13 @@ class Relationship extends Component{
     const firstName = (document.getElementById("firstName").value).trim();
     const mi = (document.getElementById("middleInitial").value).trim();
     const lastName = (document.getElementById("lastName").value).trim();
-    console.log(firstName+" "+mi+" "+lastName)
-    const bName=""
-    alert(mi.length)
+    
     if(mi.length>0 && mi !==" ")
     {
-      localStorage.setItem("bName",firstName+lastName)
+      localStorage.setItem("bName",firstName+' '+mi+' '+lastName)
     }
     else{
-      localStorage.setItem("bName",firstName+lastName)
+      localStorage.setItem("bName",firstName+' '+lastName)
     }
     
     $('#addName').modal('hide')

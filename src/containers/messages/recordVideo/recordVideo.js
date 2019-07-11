@@ -76,7 +76,7 @@ class RecordVideo extends Component{
 
   render(){
     let buttonClass = ['btn', 'btn-primary', 'btn-lg']
-    
+    console.log("passed over state = ",this.props.state.messageData)
     let formClass= ['hideForm', 'ButtonControls']
     if(this.state.showUploadForm){
         formClass = ['showForm', 'ButtonControls']

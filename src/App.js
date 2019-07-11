@@ -23,6 +23,7 @@ class App extends Component{
     const token = localStorage.getItem('token');    
     const expiryDate = localStorage.getItem('expiryDate');
     if (!token || !expiryDate) { 
+      this.props.history.push('/login')
       return;
     }
     if (new Date(expiryDate) <= new Date()) {
@@ -43,6 +44,7 @@ class App extends Component{
     localStorage.removeItem('token');
     localStorage.removeItem('expiryDate');
     localStorage.removeItem('userId');
+    this.props.history.push('/login')
   };
 
   setAutoLogout = milliseconds => {

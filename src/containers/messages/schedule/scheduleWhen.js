@@ -76,12 +76,13 @@ class MessageType extends Component{
           const frequency = localStorage.getItem('frequency');
           const oneTimeOnlyDate = localStorage.getItem('oneTimeOnlyDate');
           const recurringDate = localStorage.getItem('recurring');
+         
 
           console.log("you are scheduling a "+ messageType +" delivery for your "+relationship+", "+bName+".")
           console.log("it will be delivered "+frequency+", "+ messageDeliveryWhen+ " on "+oneTimeOnlyDate);
 
           let formData = new FormData();
-            formData.append('bName ',bName);
+            formData.append('bName',bName);
             formData.append('messageType',messageType);
             formData.append('relationship',relationship);
             formData.append('messageDeliveryWhen',messageDeliveryWhen);
@@ -89,7 +90,7 @@ class MessageType extends Component{
             formData.append('oneTimeOnlyDate',oneTimeOnlyDate);
             formData.append('recurringDate',recurringDate);
 
-          fetch("http://localhost:8080/messages/createMessage",{
+          fetch("http://localhost:8080/createMessage",{
                 method: 'POST',
                 headers:{
                     'authorization': ' Bearer '+this.props.token,
@@ -100,7 +101,34 @@ class MessageType extends Component{
           }).then(data =>{
               return data.json()
           }).then(resData=>{
-              console.log(resData)
+              
+              const messageId = resData.messageData._id;
+              const messageType =  resData.messageData.messageType;
+              const bId =  resData.messageData.messageReciever;
+              const messageDeliveryWhen =  resData.messageData.messageDeliveryWhen;
+              const frequency =  resData.messageData.frequency;
+              const createdAt =  resData.messageData.createdAt;
+              const oneTimeOnlyDate =  resData.messageData.oneTimeOnlyDate;
+
+              //cleanup localstorage
+            
+              localStorage.removeItem('bName');
+              localStorage.removeItem('relationship');
+              localStorage.removeItem('recurring');
+              localStorage.removeItem('messageDeliveryWhen');
+              localStorage.removeItem('oneTimeOnlyDate');
+              localStorage.removeItem('messageType');
+
+              switch(messageType){
+                  case 'Video Messages':
+                      this.props.history.push({
+                          pathname:'/message/recordVideo',
+                          state:{messageData:resData.messageData}
+                      })
+                  break;
+              }
+
+
           }).catch(err =>{
               console.log("error "+err)
           })
