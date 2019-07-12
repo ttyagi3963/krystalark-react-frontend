@@ -126,6 +126,9 @@ class MessageType extends Component{
                           state:{messageData:resData.messageData}
                       })
                   break;
+
+                  default:
+                      break;
               }
 
 
@@ -250,9 +253,9 @@ class MessageType extends Component{
             </div>
             <div className="submitButton" className={oneTimeOnlyRecurringClass.join(' ')}>
                             <button 
-                            type="button" 
-                           className={buttonClass.join(' ')}
-                           onClick={this.messageMetaDataHandler}
+                                    type="button" 
+                                    className={buttonClass.join(' ')}
+                                    onClick={this.messageMetaDataHandler}
                             >
                                 Continue
                             </button>

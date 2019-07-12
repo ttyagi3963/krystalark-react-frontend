@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import VideoRecorder from 'react-video-recorder'
 
 import './recordVideo.css';
+import { Switch } from 'antd';
 
 class RecordVideo extends Component{
     state ={
@@ -76,15 +77,33 @@ class RecordVideo extends Component{
 
   render(){
     let buttonClass = ['btn', 'btn-primary', 'btn-lg']
-    console.log("passed over state = ",this.props.state.messageData)
+    
     let formClass= ['hideForm', 'ButtonControls']
     if(this.state.showUploadForm){
         formClass = ['showForm', 'ButtonControls']
     }
-                        
-    
+    console.log(this.props.location.state.messageData)                    
+    let deliveryWhen = "";
+    let typeOfMessage="";
+
+    switch(this.props.location.state.messageData.messageDeliveryWhen){
+        case 'At a Specific Date After My Passing':
+
+            switch(this.props.location.state.messageData.frequency){
+                case 'once':
+                        deliveryWhen = "delivered once on "
+                break;
+            }
+           
+        break
+    }
+
       return(
+         
           <div className="col-12 VideoContainer">
+              <h4>You are almost There!</h4>
+              <h5>Lets record your Video!</h5>
+              <p>It will be delivered to {}</p>
                <VideoRecorder 
                     onRecordingComplete={(blob) =>this.stopRecordingHandler(blob)}
                     />

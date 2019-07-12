@@ -1,7 +1,7 @@
 import React , { Component} from 'react';
-import { Field, formInputData, formValidation } from 'reactjs-input-validator';
+import { Field, formInputData } from 'reactjs-input-validator';
 import $ from 'jquery';
-import axios from 'axios'
+
 window.jQuery = window.$ = $;
 
 class Createbeneficiary extends Component{  

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import MainNavigation from './components/navigation/mainNavigation';
-import { BrowserRouter, Route, Redirect, Switch, withRouter } from 'react-router-dom';
+import {Route, Switch, withRouter } from 'react-router-dom';
 import LoginForm from './containers/login/loginForm';
 import SignupForm from './containers/signup/signup';
 import Dashboard from './containers/dashboard/dashboard';
@@ -32,8 +32,8 @@ class App extends Component{
     }
 
     const userId = localStorage.getItem('userId');
-    const remainingMilliseconds =
-      new Date(expiryDate).getTime() - new Date().getTime();
+    // const remainingMilliseconds =
+    //   new Date(expiryDate).getTime() - new Date().getTime();
     this.setState({ isAuth: true, token: token, userId: userId });
     // this.setAutoLogout(remainingMilliseconds);
   }

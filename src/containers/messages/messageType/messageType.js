@@ -1,4 +1,4 @@
-import React , { Component, Fragment } from 'react';
+import React , { Component} from 'react';
 import {List, Card} from 'antd';
 import MessageSteps from '../../../components/steps/steps'
 
@@ -41,7 +41,7 @@ class MessageType extends Component{
          event.target.closest('.ant-card').classList.add("SelectedBox");
          
         
-         this. props.history.push('/createMessage/when')
+         this.props.history.push('/createMessage/when')
     }
 
     render(){

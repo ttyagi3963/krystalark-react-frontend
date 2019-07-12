@@ -1,9 +1,9 @@
-import React , { Component, Fragment } from 'react';
+import React , { Component} from 'react';
 import {List, Card} from 'antd';
 import MessageSteps from '../../../components/steps/steps'
 import Modal from '../../../utilities/modal';
 import $ from 'jquery';
-import {Field, formInputData, formValidation} from 'reactjs-input-validator';
+import {Field} from 'reactjs-input-validator';
 import 'antd/dist/antd.css'
 import './relationship.css';
 window.jQuery = window.$ = $;
