@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import VideoRecorder from 'react-video-recorder'
-
+import { Radio } from 'antd'
 import './recordVideo.css';
-import { Switch } from 'antd';
+
 
 class RecordVideo extends Component{
     state ={
@@ -70,10 +70,14 @@ class RecordVideo extends Component{
         var date = d.getUTCDate();
         return 'RecordRTC-' + year + month + date + '-' + this.getRandomString() + '.' + fileExtension;
     }
-   
-    
-    
-    
+
+    onChange = e => {
+        console.log('radio checked', e.target.value);
+        this.setState({
+            video: e.target.value,
+          })
+       
+      };
 
   render(){
     let buttonClass = ['btn', 'btn-primary', 'btn-lg']
@@ -85,34 +89,63 @@ class RecordVideo extends Component{
     console.log(this.props.location.state.messageData)                    
     let deliveryWhen = "";
     let typeOfMessage="";
+    let deliveryDate='';
 
     switch(this.props.location.state.messageData.messageDeliveryWhen){
         case 'At a Specific Date After My Passing':
 
             switch(this.props.location.state.messageData.frequency){
                 case 'once':
-                        deliveryWhen = "delivered once on "
+                        deliveryWhen = "only once";
+                        deliveryDate = this.props.location.state.messageData.oneTimeOnlyDate
                 break;
             }
            
-        break
+         break;
     }
 
       return(
          
           <div className="col-12 VideoContainer">
-              <h4>You are almost There!</h4>
-              <h5>Lets record your Video!</h5>
-              <p>It will be delivered to {}</p>
-               <VideoRecorder 
-                    onRecordingComplete={(blob) =>this.stopRecordingHandler(blob)}
-                    />
+              <h2>Great! Your message delivery is scheduled! </h2>
+              {/* <h5>It will be delivered <b>{deliveryWhen}</b> on {deliveryDate}, after you pass away. </h5> */}
+
+              <h4 style={{marginTop:'100px'}}>Would You like to Record a new Video or upload an existing one?</h4>
+              <div className="frequencyRadio">
+                  <h5> Select Below</h5>
+                     <Radio.Group 
+                           
+                            buttonStyle="solid" 
+                            onChange={this.onChange} 
+                            >
+                        <Radio.Button value="old">Upload Exisiting Video file</Radio.Button>
+                        <Radio.Button value="new">Record a New Video</Radio.Button>
+                      
+                    </Radio.Group>
+                </div>
+                {this.state.video === 'new' && 
+                     <div className="VideoScreen">
+                     <VideoRecorder 
+                         onRecordingComplete={(blob) =>this.stopRecordingHandler(blob)}
+                       
+                         />
+                 </div>
+                }
+
+               
+                {this.state.video === 'old' &&
+                   
+                    <div className="form-group">
+                        <label htmlFor="fileObject">Upload file</label>
+                        <input type = "file" name="fileObject" className="UploadFile"></input>
+                        </div>
+                   
+                }
+
+              
 
                   <div className={formClass.join(' ')}>
                       <form action="/upload" encType="multipart/form-data" method="POST" onSubmit={this.saveVideoHandler}>
-                      
-                      <input type="hidden" name="fileObject" id="fileObject"></input>
-                      
                             <button 
                             type="submit" 
                             className={buttonClass.join(' ')}
@@ -120,14 +153,14 @@ class RecordVideo extends Component{
                             >
                                Save and Continue
                             </button>
-
                       </form>
                          
-                      </div>  
+                  </div>  
           </div>
        
         
       )
+  
   }
 }
 

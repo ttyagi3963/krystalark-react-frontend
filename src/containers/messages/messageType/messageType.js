@@ -49,7 +49,7 @@ class MessageType extends Component{
             <div className='MessageContainer'>
                 <MessageSteps currentStep={1}></MessageSteps>
                 <div id="messageType" className="animated" >
-                    <h2>Please select the type of message you are composing</h2>
+                    <h2>Please select the type of message you are composing for {localStorage.getItem('bName')}</h2>
                     <List
                         grid={{
                             gutter: 16,

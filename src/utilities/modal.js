@@ -1,38 +1,29 @@
 import React, {Component,Fragment} from 'react';
 import './modal.css'
-
+import Modal from 'react-bootstrap/Modal'
 const popModal =(props)=>{
    
     return(
 
-        <div className="modal fade" 
+        <Modal
             id={props.modalId} 
             tabIndex="-1" 
-            role="dialog" 
+            animation= 'true'
             aria-labelledby="exampleModalLabel" 
             aria-hidden="true"
             data-backdrop={props.disableBackClick}
+            centered
             >
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h3 className="modal-title" id="exampleModalLabel">{props.heading}</h3>
-                            {props.showClose === 1 ?
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                :
-                                null
-                            }
-                        
-                        </div>
-                        <div className="modal-body">
-                            {props.children}
-                        </div>
-                    
-                    </div>
-            </div>
-        </div>
+                <Modal.Header>
+                        <Modal.Title id="contained-modal-title-vcenter">
+                            {props.heading}
+                        </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {props.children}
+                </Modal.Body>
+                
+        </Modal>
 
         
     )

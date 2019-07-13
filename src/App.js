@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Container, Row, Col} from 'react-bootstrap';
 import MainNavigation from './components/navigation/mainNavigation';
 import {Route, Switch, withRouter } from 'react-router-dom';
 import LoginForm from './containers/login/loginForm';
@@ -12,6 +13,7 @@ import MessageType from './containers/messages/messageType/messageType';
 import MessageSendWhen from './containers/messages/schedule/scheduleWhen'
 import RecordVideo from './containers/messages/recordVideo/recordVideo'
 import WrittenMessage from './containers/messages/writtenMessage/writtenMessage'
+
 import './App.css';
 
 
@@ -159,19 +161,18 @@ class App extends Component{
   
     return(
       
-        <div className="container">        
+        <Container>        
           <MainNavigation 
               isAuth={this.state.isAuth} 
               onLogout={this.logoutHandler}
               />
 
-          <div className="row">
-            <div className="MainContent">              
+          <Row>
+                       
                 {routes}
-            </div>
-          </div>
-
-        </div>
+           
+          </Row>
+          </Container>    
       
     )
   }

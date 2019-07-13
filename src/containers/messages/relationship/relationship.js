@@ -3,6 +3,7 @@ import {List, Card} from 'antd';
 import MessageSteps from '../../../components/steps/steps'
 import Modal from '../../../utilities/modal';
 import $ from 'jquery';
+
 import {Field} from 'reactjs-input-validator';
 import 'antd/dist/antd.css'
 import './relationship.css';

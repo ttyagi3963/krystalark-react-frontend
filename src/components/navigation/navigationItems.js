@@ -7,9 +7,11 @@ const navItems =[
     
     { id: 'login', text: 'Login', link: '/login', auth: false},
     { id: 'signup', text: 'Signup', link: '/signup', auth: false },
+    { id: 'dashboard', text: 'Dashboard', link: '/dashboard', auth: true },
     { id: 'beneficiaryList', text: 'Get Beneficiary List', link: '/getBeneficiaryList', auth: true },
     { id: 'createBeneficiary', text: 'Create Beneficiary', link: '/createBeneficiary', auth: true },
     { id: 'createMessage', text: 'Create Message', link: '/createMessage/relationship', auth: true }
+    
 ]
 const navigation = (props) =>[
    
