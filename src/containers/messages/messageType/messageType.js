@@ -65,7 +65,7 @@ class MessageType extends Component{
                         renderItem={item => (
                             <List.Item>
                                 <Card title={item.title} onClick={(event) => this.createMessageHandler(item.title,'messageType',event)}>Select</Card>
-                        </List.Item>
+                            </List.Item>
                         )}
                     />
         

@@ -1,5 +1,26 @@
 import React, {Component} from 'react';
-import Table from 'react-bootstrap/Table'
+
+
+const columns = [
+   
+    {
+      title: 'Recipient',
+      dataIndex: 'messageReciever.name',
+      key: '1',
+    },
+    {
+      title: 'Message Type',
+      dataIndex: 'messageType',
+      key: '2',
+    },
+    {
+        title: 'Delivery Date',
+        dataIndex: 'oneTimeOnlyDate',
+        key: '3',
+     },
+  ];
+
+
 class MessageList extends Component{
     state ={
        messageList:[]
@@ -13,17 +34,14 @@ class MessageList extends Component{
             }
         })
         .then(result =>{
-            if(result.status === '200')
+            console.log(typeof(result.status))
+            if(result.status === 200)
                  return result.json();
                  else
-                return ''
+                return []
         })
         .then(resData => {
-            if(resData.length >0)
-                this.setState({messageList:resData})
-             else{
-
-             }
+          this.setState({messageList:resData.messageList})
         })
         .catch(err =>{
            
@@ -32,20 +50,29 @@ class MessageList extends Component{
     }
 
     render(){
-        
-        return(
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                    <th>#</th>
-                    <th>Recipient</th>
-                    <th>Message</th>
-                    <th>Delivery</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    </tbody>
-            </Table>
+        let rows = '';
+       
+        return(<div></div>
+            // <Table striped bordered hover>
+            //     <thead>
+            //         <tr>
+            //         <th>#</th>
+            //         <th>Recipient</th>
+            //         <th>Message</th>
+            //         <th>Delivery</th>
+            //         </tr>
+            //     </thead>
+            //     <tbody>
+            //         {/* {this.state.messageList.map(message =>{
+            //              (
+            //                 <
+            //             )
+            //         }) */}
+                    
+            //         }
+            //     </tbody>
+
+            // </Table>
         )
     }
 }
