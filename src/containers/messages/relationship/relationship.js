@@ -12,7 +12,7 @@ window.jQuery = window.$ = $;
 class Relationship extends Component{
     state ={
         data:{},
-        modalVisible:false,
+        modalShow:false,
         modalHeading:'',
         relation : [
             {
@@ -50,7 +50,7 @@ class Relationship extends Component{
        
         this.setState({modalHeading: "Great! Lets get Started!"})
         this.setState({modalSubHeading: "What is your "+title+"'s Name ?"}) 
-        $('#addName').modal('show')
+        this.setState({modalShow: true})
       
     }
 
@@ -77,7 +77,7 @@ class Relationship extends Component{
       localStorage.setItem("bName",firstName+' '+lastName)
     }
     
-    $('#addName').modal('hide')
+    this.setState({modalShow: false})
     this.props.history.push('/createMessage/messageType')
    }
 
@@ -108,11 +108,10 @@ class Relationship extends Component{
       
             </div>
             <Modal 
-                    modalVisible = {this.state.modalVisible } 
                     modalId="addName"
-                    heading={this.state.modalHeading}
-                    showClose={0}
+                    heading={this.state.modalHeading}                    
                     disableBackClick="static"
+                    modalShow={this.state.modalShow}
                     >
                     <h5>{this.state.modalSubHeading}</h5>
                      <form onSubmit={this.onSubmitHandler} noValidate>

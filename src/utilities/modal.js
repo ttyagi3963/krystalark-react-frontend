@@ -1,11 +1,14 @@
 import React, {Component,Fragment} from 'react';
 import './modal.css'
-import Modal from 'react-bootstrap/Modal'
+import Modal from 'react-bootstrap/Modal';
+
+
 const popModal =(props)=>{
    
     return(
 
         <Modal
+            show={props.modalShow}
             id={props.modalId} 
             tabIndex="-1" 
             animation= 'true'

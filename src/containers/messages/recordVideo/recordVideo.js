@@ -13,7 +13,7 @@ class RecordVideo extends Component{
     stopRecordingHandler =(blob)=>{
         this.setState({showUploadForm: true})
         var fileName = this.getFileName('webm');
-        let video = URL.createObjectURL(blob);
+        // let video = URL.createObjectURL(blob);
         var fileObject = new File([blob], fileName, {
             type: 'video/webm'
         });
