@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Container, Row, Col} from 'react-bootstrap';
 import MainNavigation from './components/navigation/mainNavigation';
 import {Route, Switch, withRouter } from 'react-router-dom';
-import LoginForm from './containers/login/loginForm';
+
 import SignupForm from './containers/signup/signup';
 import Dashboard from './containers/dashboard/dashboard';
 import CreateBeneficiary from './containers/beneficiary/createBeneficiary/createBeneficiary';
@@ -13,8 +13,9 @@ import MessageType from './containers/messages/messageType/messageType';
 import MessageSendWhen from './containers/messages/schedule/scheduleWhen'
 import RecordVideo from './containers/messages/recordVideo/recordVideo'
 import WrittenMessage from './containers/messages/writtenMessage/writtenMessage'
-
+import LoginForm from './containers/login/loginForm'
 import './App.css';
+
 
 
 class App extends Component{
@@ -94,11 +95,17 @@ class App extends Component{
     let routes = (
       <Switch>
           {/* user clicked on login */}
-          <Route path="/login" exact component = {LoginForm}/>
+          <Route path="/login" 
+            exact 
+            render = { props => (<LoginForm history={this.props.history}></LoginForm>)}>
+          </Route>
 
           {/* user clicked on signup */}
-          <Route path="/signup" exact component = {SignupForm}/>
-
+          <Route path="/signup" 
+            exact 
+            
+          render = { props => (<SignupForm history={this.props.history}></SignupForm>)}>
+            </Route>
         
       </Switch>
     )

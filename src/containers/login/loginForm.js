@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {withRouter } from 'react-router-dom';
 import { Field, formInputData, formValidation } from 'reactjs-input-validator';
 import './loginForm.css';
 
@@ -74,9 +75,8 @@ class loginForm extends Component{
                   );
                   localStorage.setItem('expiryDate', expiryDate.toISOString());
                   this.setAutoLogout(remainingMilliseconds);
-                 
                   window.location.href="/dashboard"
-                  
+                 
 
             })
             .catch(err => {
@@ -133,4 +133,4 @@ class loginForm extends Component{
    }
 }
 
-export default loginForm;
+export default withRouter(loginForm);

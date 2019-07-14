@@ -52,7 +52,7 @@ class BeneficiaryList extends Component {
             }}
             description={
             <span className="NullText">
-                <h5>You have not added any <b>Beneficiaries!</b></h5>
+                You have not added any <b>Beneficiaries!</b>
             </span>
             }
         >

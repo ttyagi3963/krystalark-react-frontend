@@ -48,8 +48,8 @@ class SignupForm extends Component{
         .then(res => {               
               if (res.status !== 200 && res.status !== 201) {
                 console.log('Error!');
-                this.setState({error: "Unable to create a new account"})
-                throw new Error('Unable to create a new account');
+                this.setState({error: "The email is already in use"})
+                throw new Error('The email is already in use');
               }
               return res.json();
            
@@ -60,7 +60,8 @@ class SignupForm extends Component{
                 isAuth: true,
                 token: resData.token,
                 authLoading: false,
-                userId: resData.userId
+                userId: resData.userId,
+                user:resData.user
               });
               localStorage.setItem('token', resData.token);
               localStorage.setItem('userId', resData.userId);
@@ -70,7 +71,8 @@ class SignupForm extends Component{
               );
               localStorage.setItem('expiryDate', expiryDate.toISOString());
               this.setAutoLogout(remainingMilliseconds);
-              this.props.history.replace('/');
+              //if loginCount = 1 should send to onboarding here 
+              window.location.href='/dashboard';
 
         })
         .catch(err => {
