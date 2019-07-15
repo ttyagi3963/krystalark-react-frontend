@@ -4,12 +4,14 @@ import {Link} from 'react-router-dom';
 import BeneficiaryList from '../beneficiary/beneficiaryList';
 import MessageList from '../messages/messageList/messageList';
 import './dashboard.css';
-import Silhoutte from '../../static/img/m.jpg'
+import Silhoutte from '../../static/img/m.jpg';
+import Modal from '../../utilities/modal'
 
 class Dashboard extends Component{
    state = {
       userInfo:{},
-      beneList:[]
+      beneList:[],
+      modalShow: false
    }
 
    componentDidMount(){
@@ -34,6 +36,43 @@ class Dashboard extends Component{
 
    }
 
+   inputChangeHandler =(value, file) =>{
+        this.setState({postData: file}, function(){
+            console.log(this.state.postData.size)
+        })
+    }
+
+   handlePicModal =(event)=>{
+       event.preventDefault();
+       this.setState({modalShow:true})
+   }
+
+   uploadProfilePicHandler =(event) =>{
+    event.preventDefault();
+    let formData = new FormData();
+    formData.append('fileObject',this.state.postData);   
+
+        fetch('http://localhost:8080//uploadProfilePic',{
+            method:'POST',
+            headers:{
+                'authorization': ' Bearer '+this.props.token,
+            
+            },
+            body: formData
+        })
+        .then(res =>{
+            return res.json();
+        })
+        .then(resData => {
+            console.log(resData)
+            // const pic = "http://localhost:8080/"+(resData.beneficiary.picture).replace(/\/\//g, '/')
+            // this.setState({profilePic: pic, pic:pic})
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+   }
+
    render(){
       
        return(
@@ -53,7 +92,7 @@ class Dashboard extends Component{
                                 <div>                                   
                                   <img src={Silhoutte} alt="Profile Pic" />
                                   <div style={{padding:'40px 0 0 0 '}}>
-                                      <a href="" className="Link">Add Profile Picture</a>
+                                      <a href="javascript://" onClick={this.handlePicModal} className="Link">Add Profile Picture</a>
                                  </div>
                                 </div>
                             }
@@ -109,6 +148,23 @@ class Dashboard extends Component{
 
                </Col>
            </Col>
+
+           <Modal 
+                    modalId="addPic"
+                    heading={this.state.modalHeading}                    
+                    disableBackClick=""
+                    modalShow={this.state.modalShow}
+                    >
+                       <form id="addProfilePic" encType="multipart/form-data" onSubmit={this.uploadProfilePicHandler}>
+                       <input type="file" 
+                             name="avatar" 
+                             id="avatar"
+                            onChange={e =>this.inputChangeHandler(e.target.value, e.target.files[0])}
+
+                            />  
+                           <button type="submit" className="btn btn-primary">Upload</button>       
+                       </form>
+                </Modal>          
            
        </Fragment>
        )
