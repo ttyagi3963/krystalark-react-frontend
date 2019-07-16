@@ -1,24 +1,32 @@
 import React, {Component} from 'react';
-
+import {Avatar, List, Card, Icon,ConfigProvider,Empty, Button, Table} from 'antd';
 
 const columns = [
-   
     {
-      title: 'Recipient',
-      dataIndex: 'messageReciever.name',
-      key: '1',
+      title: ' Assigned To',
+      dataIndex: 'assigned',
+      sorter: true,
+      render: name => `${name.first} ${name.last}`,
+      width: '20%',
     },
     {
-      title: 'Message Type',
-      dataIndex: 'messageType',
-      key: '2',
+      title: 'Scheduled For',
+      dataIndex: 'scheduled',
+      filters: [{ text: 'Male', value: 'male' }, { text: 'Female', value: 'female' }],
+      width: '20%',
     },
     {
-        title: 'Delivery Date',
-        dataIndex: 'oneTimeOnlyDate',
-        key: '3',
-     },
+        title: 'Message Type',
+        dataIndex: 'mType',
+        filters: [{ text: 'Video', value: 'Video' }, { text: 'Written', value: 'Written' }],
+        width: '20%',
+      },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+    },
   ];
+
 
 
 class MessageList extends Component{
@@ -41,7 +49,14 @@ class MessageList extends Component{
                 return []
         })
         .then(resData => {
-          this.setState({messageList:resData.messageList})
+            if(resData.status === '200'){
+                this.setState({messageList:resData.messageList})
+            }
+            else{
+               
+                this.setState({messageList:[]})
+            }
+         
         })
         .catch(err =>{
            
@@ -49,30 +64,39 @@ class MessageList extends Component{
         })
     }
 
+    handleCreateMessage =() =>{
+        window.location.href='/createMessage/relationship'
+    }
+
+customizeRenderEmpty = () => (
+        <Empty
+           
+            imageStyle={{
+            height: 60,
+            }}
+            description={
+            <span className="NullText">
+                You have not added any <b>Messages!</b>
+            </span>
+            }
+        >
+            <Button type="primary" onClick={this.handleCreateMessage}>Schedule a Message</Button>
+           
+      </Empty>
+      );
+   
+
     render(){
         let rows = '';
+        
        
-        return(<div></div>
-            // <Table striped bordered hover>
-            //     <thead>
-            //         <tr>
-            //         <th>#</th>
-            //         <th>Recipient</th>
-            //         <th>Message</th>
-            //         <th>Delivery</th>
-            //         </tr>
-            //     </thead>
-            //     <tbody>
-            //         {/* {this.state.messageList.map(message =>{
-            //              (
-            //                 <
-            //             )
-            //         }) */}
+        return(
+            <ConfigProvider renderEmpty={this.customizeRenderEmpty}>
+                <Table  dataSource={this.state.messageList} columns={columns}>
                     
-            //         }
-            //     </tbody>
-
-            // </Table>
+                </Table>
+             </ConfigProvider>
+           
         )
     }
 }

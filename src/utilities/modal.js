@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 
 
 const popModal =(props)=>{
-   
+  
     return(
 
         <Modal
@@ -12,12 +12,12 @@ const popModal =(props)=>{
             id={props.modalId} 
             tabIndex="-1" 
             animation= 'true'
-            aria-labelledby="exampleModalLabel" 
+            aria-labelledby={props.modalId} 
             aria-hidden="true"
             data-backdrop={props.disableBackClick}
             centered
             >
-                <Modal.Header>
+                <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">
                             {props.heading}
                         </Modal.Title>
