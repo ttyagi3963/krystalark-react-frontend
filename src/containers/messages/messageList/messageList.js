@@ -4,26 +4,38 @@ import {Avatar, List, Card, Icon,ConfigProvider,Empty, Button, Table} from 'antd
 const columns = [
     {
       title: ' Assigned To',
-      dataIndex: 'assigned',
+      dataIndex: 'messageReciever.name',
       sorter: true,
-      render: name => `${name.first} ${name.last}`,
-      width: '20%',
-    },
-    {
-      title: 'Scheduled For',
-      dataIndex: 'scheduled',
-      filters: [{ text: 'Male', value: 'male' }, { text: 'Female', value: 'female' }],
+       
       width: '20%',
     },
     {
         title: 'Message Type',
-        dataIndex: 'mType',
+        dataIndex: 'messageType',
         filters: [{ text: 'Video', value: 'Video' }, { text: 'Written', value: 'Written' }],
-        width: '20%',
+        render: name =>{
+            if(name ==="Video Messages"){
+                return "Video"
+            }
+            else{
+                if(name ==="Written Messages"){
+                    return "Written"
+                }
+            }
+        },
+        width: '15%',
       },
     {
-      title: 'Email',
-      dataIndex: 'email',
+      title: 'Delivery ',
+      dataIndex: 'scheduled',
+    //   filters: [{ text: 'Male', value: 'male' }, { text: 'Female', value: 'female' }],
+      width: '33%',
+    },
+    
+    {
+      title: 'Status',
+      dataIndex: 'messageStatus',
+      width: '10%',
     },
   ];
 
@@ -42,7 +54,7 @@ class MessageList extends Component{
             }
         })
         .then(result =>{
-            console.log(typeof(result.status))
+           
             if(result.status === 200)
                  return result.json();
                  else

@@ -18,14 +18,14 @@ const navigation = (props) =>[
     
        
                     ...navItems.filter(item => item.auth === props.isAuth).map(item => (
-                            <li key={ item.id}>
+                            <li key={ item.id} style={{display:'inline-block'}}>
                                 <NavLink to ={item.link} exact key={item.id}>
                                     {item.text}
                                     </NavLink>
                             </li>
                     )),
                     props.isAuth && (
-                        <li className="navigation-item" key={7}>
+                        <li className="navigation-item" key={7} style={{display:'inline-block'}}>
                             <button onClick={props.onLogout}>Logout</button>
                         </li>
                     )

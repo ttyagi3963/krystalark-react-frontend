@@ -76,7 +76,7 @@ class MessageType extends Component{
           const frequency = localStorage.getItem('frequency');
           const oneTimeOnlyDate = localStorage.getItem('oneTimeOnlyDate');
           const recurringDate = localStorage.getItem('recurring');
-         
+         console.log(bName)
 
           console.log("you are scheduling a "+ messageType +" delivery for your "+relationship+", "+bName+".")
           console.log("it will be delivered "+frequency+", "+ messageDeliveryWhen+ " on "+oneTimeOnlyDate);
@@ -89,11 +89,13 @@ class MessageType extends Component{
             formData.append('frequency',frequency);
             formData.append('oneTimeOnlyDate',oneTimeOnlyDate);
             formData.append('recurringDate',recurringDate);
-
+            console.log(formData.getAll('bName'))
           fetch("http://localhost:8080/createMessage",{
                 method: 'POST',
                 headers:{
                     'authorization': ' Bearer '+this.props.token,
+                   
+
                    
                 },
                 body: formData

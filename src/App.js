@@ -113,6 +113,14 @@ class App extends Component{
       routes =(
         <Switch>
             <Route 
+            path="/" 
+            exact
+            render = {props =>(
+                    <Dashboard {...props} token={this.state.token} userId={this.state.userId}></Dashboard>
+            )} 
+            />
+      
+            <Route 
             path="/dashboard" 
             exact
             render = {props =>(
