@@ -1,7 +1,7 @@
 import React , {Component, Fragment} from 'react';
 import { Col, Form, Button} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
-import BeneficiaryList from '../beneficiary/beneficiaryList';
+import BeneficiaryListRow from '../beneficiary/beneficiaryListRowDisplay';
 import MessageList from '../messages/messageList/messageList';
 import './dashboard.css';
 import Silhoutte from '../../static/img/m.jpg';
@@ -165,7 +165,7 @@ class Dashboard extends Component{
                <Col xs={12}  className="Boxes">
                    <p className="Heading">Your Beneficiaries</p>
                    <ul className="BeneficiaryList">
-                        <BeneficiaryList token={this.props.token} beneList={this.state.beneList}></BeneficiaryList>
+                        <BeneficiaryListRow token={this.props.token} beneList={this.state.beneList} useFor="dashboard"></BeneficiaryListRow>
                     </ul>
                </Col>
                <Col xs={12} className="Boxes" style={{marginTop:'40px'}}>

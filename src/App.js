@@ -7,6 +7,7 @@ import SignupForm from './containers/signup/signup';
 import Dashboard from './containers/dashboard/dashboard';
 import CreateBeneficiary from './containers/beneficiary/createBeneficiary/createBeneficiary';
 import BeneficiaryList from './containers/beneficiary/beneficiaryList';
+import BeneficiaryListRow from './containers/beneficiary/beneficiaryListRowDisplay';
 import BeneficiaryInfo from './containers/beneficiary/beneficiaryInfo/beneficiaryInfo';
 import Relationship from './containers/messages/relationship/relationship';
 import MessageType from './containers/messages/messageType/messageType';
@@ -56,6 +57,10 @@ class App extends Component{
     }, milliseconds);
   };
 
+  loadBeneficiaryData =(beneList) =>{
+    this.setState({beneList:beneList})
+  }
+
   handleMessageStates =(step, data) =>{
     switch(step){
       case 'relationship': 
@@ -87,8 +92,6 @@ class App extends Component{
         })
       break
     }
-   
-
   }
   render(){
     

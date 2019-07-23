@@ -1,16 +1,9 @@
 import React , { Component, Fragment} from 'react';
-import {Link} from 'react-router-dom'
+import {Empty, Button} from 'antd';
 
-import {Avatar, List, Card, Icon,ConfigProvider,Empty, Button} from 'antd';
-import './beneficiaryList.css'
-const { Meta } = Card;
+import DisplayBListInRow from './beneficiaryListRowDisplay';
+import DisplayBListInCol from './beneficiaryListColDisplay';
 
-const IconText = ({ type, text, twoToneColor,theme,id,linkTo }) => (
-    <span>
-      <Icon type={type} style={{ marginRight: 8 }} twoToneColor={twoToneColor} theme={theme}/>
-      <span style={{fontWeight:'500'}}> <Link to={linkTo}>{text}</Link></span>
-    </span>
-  );
 
   
 
@@ -19,30 +12,30 @@ class BeneficiaryList extends Component {
         beneList:[]
     };
 
-    // componentWillMount(){
-    //     fetch('http://localhost:8080/getBeneficiaryList',{
-    //         method:'GET',
-    //         headers:{
-    //             Authorization: 'Bearer ' + this.props.token
-    //         }
-    //     })
-    //     .then( result =>{
-    //         if(result.status !==  200 && result.status !== 201){
-    //             throw new Error('Could not get list')
-    //         }
-    //         return result.json();
-    //     })
-    //     .then(resData => {
-            
-    //         this.setState({beneList: resData.userData.beneficiarys, userData: resData.userData},function(){
-              
-    //         })
+    componentWillMount(){
+        fetch('http://localhost:8080/getBeneficiaryList',{
+            method:'GET',
+            headers:{
+                Authorization: 'Bearer ' + this.props.token
+            }
+        })
+        .then( result =>{
+            if(result.status !==  200 && result.status !== 201){
+                throw new Error('Could not get list')
+            }
+            return result.json();
+        })
+        .then(resData => {
+            this.props.loadBeneficiaryData(resData.userData.beneficiarys)
+            // this.setState({beneList: resData.userData.beneficiarys, userData: resData.userData},function(){
+            //   console.log(this.state.beneList.length)
+            // })
            
-    //     })
-    //     .catch(err =>{
-    //         console.log(err)
-    //     })
-    // }
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+    }
 
     customizeRenderEmpty = () => (
         <Empty
@@ -69,64 +62,16 @@ class BeneficiaryList extends Component {
     render(){
        
         return(
-         <ConfigProvider renderEmpty={this.customizeRenderEmpty}>
-            <List
-                itemLayout="vertical"
-                size="large" 
-                dataSource={this.props.beneList}
-                        renderItem={item => (
-                            <List.Item
-                                 key={item._id}
-                                 actions={[                                     
-                                    <IconText 
-                                        id={item._id}
-                                        type="profile" 
-                                        theme="twoTone" 
-                                        twoToneColor="#eb2f96" 
-                                        text="View Profile" 
-                                        linkTo={"/beneficiary/"+item._id}
-                                        
-                                        />,
-                                    <IconText 
-                                        id={item._id} 
-                                        type="edit" 
-                                        theme="twoTone" 
-                                        twoToneColor="#52c41a" 
-                                        text="Create a New Message" 
-                                        linkTo={"/createMessage/messageType?bId="+item._id}
-                                        /> ,
-
-                                    <IconText 
-                                        id={item._id} 
-                                        type="message" 
-                                        theme="twoTone" 
-                                        twoToneColor="" 
-                                        text="Scheduled Messages" 
-                                        linkTo={"/createMessage/messageType?bId="+item._id}
-                                        /> 
-                                    
-                                    ]}
-                            >
-
-                                <List.Item.Meta
-                                    avatar={<Avatar style={{ backgroundColor: '#87d068' , marginRight:'10px', paddingBottom:'15px' }} icon="user" />}
-                                    title={
-                                        <Link to={"/beneficiary/"+item._id}>{item.name} ({item.relationship})</Link>
-                                    }
-                                  
-                                    />
-                               
-                            </List.Item>
-                        )}
-                    />
-        
-            </ConfigProvider>                            
-
-            // <Fragment>
-            //      <Beneficiary beneficiary={this.state.beneList}></Beneficiary> 
-            // </Fragment>
-            
+            <Fragment>
+                     {/* {this.props.useFor ==='dashboard'?             
+                           <DisplayBListInRow renderEmpty={this.customizeRenderEmpty} beneList={this.state.beneList}></DisplayBListInRow>
+                           :
+                           <DisplayBListInCol  renderEmpty={this.customizeRenderEmpty} beneList={this.state.beneList}></DisplayBListInCol>
+                          
+                 } */}
+            </Fragment>
            
+        
         )
     }
 

@@ -3,6 +3,7 @@ import {List, Card} from 'antd';
 import MessageSteps from '../../../components/steps/steps'
 import Modal from '../../../utilities/modal';
 import $ from 'jquery';
+import BeneficiaryList from '../../beneficiary/beneficiaryList'
 
 import {Field} from 'reactjs-input-validator';
 import 'antd/dist/antd.css'
@@ -14,6 +15,8 @@ class Relationship extends Component{
         data:{},
         modalShow:false,
         modalHeading:'',
+        showPreBListFlag: false,
+        showNullFlag: false,
         relation : [
             {
               title: 'Father',
@@ -80,12 +83,54 @@ class Relationship extends Component{
     this.setState({modalShow: false})
     this.props.history.push('/createMessage/messageType')
    }
+   
+
+   ChooseScreenhandler =(showPreBListFlag) =>{
+      this.setState({ showPreBListFlag:  showPreBListFlag})
+   }
+
+   loadBeneficiaryData =(beneList)=>{
+     if(beneList.length >  0){
+       this.setState({showPreBListFlag: true}, function(){
+         this.setState({beneList: beneList})
+       })
+     }
+   }
 
     render(){
+     
         return(
             <div className='MessageContainer'>
+                <BeneficiaryList token={this.props.token} loadBeneficiaryData={this.loadBeneficiaryData}></BeneficiaryList>
+
                 <MessageSteps currentStep={0}></MessageSteps>
-                <div id="relationship" className="animated" >
+
+                {this.state.showPreBListFlag && 
+                   <div className="PreexistingBeneficiary" >
+                   <h2>Choose from Existing Beneficiaries?</h2>
+                   <div className="PreexistingBeneficiariesContainer">
+                   <List                  
+                          grid={{
+                            gutter: 16,
+                            xs: 1,
+                            sm: 2,
+                            md: 4,
+                            lg: 4,
+                            xl: 6,
+                            xxl: 3,
+                          }}
+                        dataSource={this.state.beneList}
+                        renderItem={item => (
+                          <List.Item>
+                            <Card title={item.name}>Select</Card>
+                          </List.Item>
+                        )}
+                      />
+                   </div>
+                 </div>
+                }
+               {this.state.showNullFlag  && 
+                <div id="relationship" className={["animated", 'DontShow'].join('')} >
                 <h2>Who are you scheduling this message for?</h2>
                 <List
                     grid={{
@@ -107,6 +152,7 @@ class Relationship extends Component{
                 />
       
             </div>
+               }
             <Modal 
                     modalId="addName"
                     heading={this.state.modalHeading}                    
