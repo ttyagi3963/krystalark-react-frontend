@@ -86,28 +86,12 @@ class RecordVideo extends Component{
     if(this.state.showUploadForm){
         formClass = ['showForm', 'ButtonControls']
     }
-    console.log(this.props.location.state.messageData)                    
-    let deliveryWhen = "";
-    let typeOfMessage="";
-    let deliveryDate='';
-
-    switch(this.props.location.state.messageData.messageDeliveryWhen){
-        case 'At a Specific Date After My Passing':
-
-            switch(this.props.location.state.messageData.frequency){
-                case 'once':
-                        deliveryWhen = "only once";
-                        deliveryDate = this.props.location.state.messageData.oneTimeOnlyDate
-                break;
-            }
-           
-         break;
-    }
+    
 
       return(
          
           <div className="col-12 VideoContainer">
-              <h2>Great! Your message delivery is scheduled! </h2>
+              <h2>Lets Upload Your Video Message</h2>
               {/* <h5>It will be delivered <b>{deliveryWhen}</b> on {deliveryDate}, after you pass away. </h5> */}
 
               <h4 style={{marginTop:'100px'}}>Would You like to Record a new Video or upload an existing one?</h4>

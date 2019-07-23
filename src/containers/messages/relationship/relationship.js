@@ -16,31 +16,71 @@ class Relationship extends Component{
         modalShow:false,
         modalHeading:'',
         showPreBListFlag: false,
-        showNullFlag: false,
+        showNullFlag: true,
         relation : [
             {
-              title: 'Father',
+              title: 'My Father',
               id:"category-1"
             },
             {
-              title: 'Mother',
+              title: 'My Mother',
               id:"category-2"
             },
             {
-              title: 'Son',
+              title: 'My Son',
               id:"category-3"
             },
             {
-              title: 'Daughter',
+              title: 'My Daughter',
               id:"category-4"
             },
             {
-              title: 'Sister',
+              title: 'My Sister',
               id:"category-5"
             },
             {
-              title: 'Brother',
+              title: 'My Brother',
               id:"category-6"
+            },
+            {
+              title: 'My Wife',
+              id:"category-7"
+            },
+            {
+              title: 'My Husband',
+              id:"category-8"
+            },
+            {
+              title: 'My Girlfriend',
+              id:"category-9"
+            },
+            {
+              title: 'My Boyfriend',
+              id:"category-10"
+            },
+            {
+              title: 'My Uncle',
+              id:"category-11"
+            },
+            {
+              title: 'My Aunt',
+              id:"category-12"
+            },
+            {
+              title: 'My Grandfather',
+              id:"category-13"
+            },
+            {
+              title: 'My Grandmother',
+              id:"category-14"
+            },
+            {
+              title: 'My Grandson',
+              id:"category-14"
+            },
+            {
+              title: 'My Granddaugther',
+              id:"category-13"
             },
           ]
     }
@@ -52,7 +92,7 @@ class Relationship extends Component{
 
        
         this.setState({modalHeading: "Great! Lets get Started!"})
-        this.setState({modalSubHeading: "What is your "+title+"'s Name ?"}) 
+        this.setState({modalSubHeading: "What is your "+(title).replace('My ','')+"'s Name ?"}) 
         this.setState({modalShow: true})
       
     }
@@ -96,6 +136,9 @@ class Relationship extends Component{
        })
      }
    }
+   handleClose =()=>{
+      this.setState({modalShow:false})
+   }
 
     render(){
      
@@ -111,14 +154,14 @@ class Relationship extends Component{
                    <div className="PreexistingBeneficiariesContainer">
                    <List                  
                           grid={{
-                            gutter: 16,
-                            xs: 1,
-                            sm: 2,
-                            md: 4,
-                            lg: 4,
-                            xl: 6,
-                            xxl: 3,
-                          }}
+                        gutter: 16,
+                        xs: 1,
+                        sm: 2,
+                        md: 4,
+                        lg: 4,
+                        xl: 6,
+                        xxl: 3,
+                      }}
                         dataSource={this.state.beneList}
                         renderItem={item => (
                           <List.Item>
@@ -158,6 +201,7 @@ class Relationship extends Component{
                     heading={this.state.modalHeading}                    
                     disableBackClick="static"
                     modalShow={this.state.modalShow}
+                    handleClose={this.handleClose}
                     >
                     <h5>{this.state.modalSubHeading}</h5>
                      <form onSubmit={this.onSubmitHandler} noValidate>
