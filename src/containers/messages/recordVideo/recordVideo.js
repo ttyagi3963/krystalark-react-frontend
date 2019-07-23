@@ -7,7 +7,7 @@ import './recordVideo.css';
 class RecordVideo extends Component{
     state ={
         showUploadForm:false,
-        fileObject:''
+        fileObject:'' 
 
     }
     stopRecordingHandler =(blob)=>{
@@ -17,7 +17,7 @@ class RecordVideo extends Component{
         var fileObject = new File([blob], fileName, {
             type: 'video/webm'
         });
-        this.setState({fileObject: fileObject})
+        this.setState({fileObject: fileObject});
        
     }
 
