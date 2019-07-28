@@ -39,9 +39,7 @@ class MessageType extends Component{
          });       
  
          event.target.closest('.ant-card').classList.add("SelectedBox");
-         
-        
-         this.props.history.push('/message/when')
+         this.props.history.push('/message/recordVideo')
     }
 
     render(){
