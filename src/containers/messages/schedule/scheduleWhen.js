@@ -89,7 +89,7 @@ class MessageType extends Component{
             formData.append('frequency',frequency);
             formData.append('oneTimeOnlyDate',oneTimeOnlyDate);
             formData.append('recurringDate',recurringDate);
-            console.log(formData.getAll('bName'))
+           
           fetch("http://localhost:8080/createMessage",{
                 method: 'POST',
                 headers:{
@@ -163,7 +163,7 @@ class MessageType extends Component{
         }
         return(
             <div className='MessageContainer'>
-                <MessageSteps currentStep={2}></MessageSteps>
+                <MessageSteps currentStep={3}></MessageSteps>
                 <div id="messageDeliveryWhen" className="animated" >
                     <h2>When Should the message be sent?</h2>
                     <List

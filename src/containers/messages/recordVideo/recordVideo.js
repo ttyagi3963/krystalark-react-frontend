@@ -30,6 +30,7 @@ class RecordVideo extends Component{
             method:'POST',
             headers:{
                 'authorization': ' Bearer '+this.props.token,
+                
                
             },
             body: formData

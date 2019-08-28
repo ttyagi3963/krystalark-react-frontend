@@ -111,7 +111,7 @@ class Relationship extends Component{
     const firstName = (document.getElementById("firstName").value).trim();
     const mi = (document.getElementById("middleInitial").value).trim();
     const lastName = (document.getElementById("lastName").value).trim();
-    
+    console.log(firstName)
     if(mi.length>0 && mi !==" ")
     {
       localStorage.setItem("bName",firstName+' '+mi+' '+lastName)

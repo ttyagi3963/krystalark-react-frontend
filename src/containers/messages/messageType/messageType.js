@@ -33,13 +33,21 @@ class MessageType extends Component{
 
 
     createMessageHandler(title,parent,event){
+      
         localStorage.setItem(parent,title);
         document.querySelectorAll('.ant-card').forEach(function(el){
             el.classList.remove("SelectedBox")
-         });       
- 
-         event.target.closest('.ant-card').classList.add("SelectedBox");
-         this.props.history.push('/message/recordVideo')
+         }); 
+
+         if(title=== 'Written Messages'){
+            event.target.closest('.ant-card').classList.add("SelectedBox");
+            this.props.history.push('/message/writtenMessage')
+         }
+         else{
+            event.target.closest('.ant-card').classList.add("SelectedBox");
+            this.props.history.push('/message/recordVideo')
+         }
+         
     }
 
     render(){
