@@ -1,44 +1,6 @@
 import React, {Component} from 'react';
-import {Avatar, List, Card, Icon,ConfigProvider,Empty, Button, Table} from 'antd';
-
-const columns = [
-    {
-      title: ' Assigned To',
-      dataIndex: 'messageReciever.name',
-      sorter: true,
-       
-      width: '20%',
-    },
-    {
-        title: 'Message Type',
-        dataIndex: 'messageType',
-        filters: [{ text: 'Video', value: 'Video' }, { text: 'Written', value: 'Written' }],
-        render: name =>{
-            if(name ==="Video Messages"){
-                return "Video"
-            }
-            else{
-                if(name ==="Written Messages"){
-                    return "Written"
-                }
-            }
-        },
-        width: '15%',
-      },
-    {
-      title: 'Delivery ',
-      dataIndex: 'scheduled',
-    //   filters: [{ text: 'Male', value: 'male' }, { text: 'Female', value: 'female' }],
-      width: '33%',
-    },
-    
-    {
-      title: 'Status',
-      dataIndex: 'messageStatus',
-      width: '10%',
-    },
-  ];
-
+import {Col, Row, Container} from 'react-bootstrap'
+import './messageList.css'
 
 
 class MessageList extends Component{
@@ -76,38 +38,52 @@ class MessageList extends Component{
         })
     }
 
-    handleCreateMessage =() =>{
-        window.location.href='/createMessage/relationship'
-    }
-
-customizeRenderEmpty = () => (
-        <Empty
-           
-            imageStyle={{
-            height: 60,
-            }}
-            description={
-            <span className="NullText">
-                You have not added any <b>Messages!</b>
-            </span>
-            }
-        >
-            <Button type="primary" onClick={this.handleCreateMessage}>Schedule a Message</Button>
-           
-      </Empty>
-      );
-   
+ 
 
     render(){
-        let rows = '';
         
-       
         return(
-            <ConfigProvider renderEmpty={this.customizeRenderEmpty}>
-                <Table  dataSource={this.state.messageList} columns={columns}>
-                    
-                </Table>
-             </ConfigProvider>
+            <Container className="MessageListContainer">
+                <Row className="Header">
+                    <Col xs={2}>Recipient</Col>
+                    <Col xs={5}>Subject</Col>
+                    <Col xs={2}>Delivery Date</Col>
+                    <Col xs={3}>Status</Col>
+                </Row>
+               
+
+
+                 {
+                     this.state.messageList.map(record =>{
+                            return (
+                                <Row className="DataRow">
+                                    <Col xs={2}>{record.messageReciever.name}</Col>
+                                    <Col xs={5}>{record.messageSubject}</Col>
+                                    <Col xs={2}>{record.messageDeliveryWhen ? record.messageDeliveryWhen : <a  href={"/createMessage/when?mid="+record._id}>Not scheduled</a>}</Col>
+                                    <Col xs={3}>{record.messageDeliveryWhen && record.messageReciever.beneficiaryStatus !=="Incomplete" 
+                                                    ? <a href=''>Review Message</a> 
+                                                    :
+                                                    !record.messageDeliveryWhen && record.messageReciever.beneficiaryStatus ==="Incomplete" ? 
+                                                    <ul>
+                                                        
+                                                        <li><a href={'/createMessage/addBeneficiary?bId='+record.messageReciever._id}>Complete Beneficiary Info</a></li>
+                                                        <li><a href={"/createMessage/when?mid="+record._id}>Schedule Message</a></li>
+                                                    </ul>
+                                                       
+                                                    
+                                                    :
+                                                         !record.messageDeliveryWhen ? 'Message not scheduled' :
+                                                         record.messageReciever.beneficiaryStatus ==="Incomplete" ? 'Beneficiary Info Incomplete' : ''
+                                                         
+                                                            
+                                                            }
+                                    </Col>
+                                </Row>
+                            )
+                    })
+                 }
+            </Container>
+           
            
         )
     }

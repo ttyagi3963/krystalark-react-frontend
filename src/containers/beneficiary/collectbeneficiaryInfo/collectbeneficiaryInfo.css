@@ -1,0 +1,10 @@
+.RecipientContainer{
+    margin-top:40px
+}
+.RecipientContainer .fadeIn{
+    opacity:1;
+    width:100px;
+    height:100px;
+    transition: width 0.5s, height 0.5s, opacity 0.5s 0.5s;
+
+}

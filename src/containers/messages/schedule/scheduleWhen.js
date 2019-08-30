@@ -1,5 +1,6 @@
 import React , { Component, Fragment } from 'react';
 import {List, Card, Radio, Button} from 'antd';
+import  queryString from 'query-string'
 import MessageSteps from '../../../components/steps/steps'
 import Cleave from 'cleave.js/react'
 import 'antd/dist/antd.css'
@@ -24,7 +25,46 @@ class MessageType extends Component{
           }
         ]
     }
+    
+    componentDidMount =(props) =>{
+    
+    let messageId = (queryString.parse(this.props.location.search)).mid
+       if(!messageId){
+           this.props.history.push('/dashboard')
+           return
+       }
 
+       fetch('http://localhost:8080/getMessageById/'+messageId,{
+            method: 'GET',
+            headers:{
+                Authorization: 'Bearer ' + this.props.token
+            }
+        })
+        .then(result =>{
+           
+            if(result.status === 200)
+                 return result.json();
+                 else
+                return []
+        })
+        .then(resData => {
+            if(resData.status === '200'){
+                this.setState({message:resData.message})
+                console.log(resData)
+            }
+            else{
+               
+                this.setState({message:''})
+            }
+         
+        })
+        .catch(err =>{
+           
+            console.log("message retrival error", err)
+        })
+
+
+    }
 
     createMessageHandler(title,parent,event){
         localStorage.setItem(parent,title);
@@ -40,7 +80,9 @@ class MessageType extends Component{
             document.getElementById("frequency").classList.add('fadeIn');
          }
          else{
-            //this.props.history.push('/createMessage/scheduleWhen')
+             const mId=this.state.message._id;
+             const bId= this.state.message.messageReciever._id
+           this.props.history.push('/createMessage/addBeneficiary?bId='+bId+'&mId='+mId)
          }
        
         

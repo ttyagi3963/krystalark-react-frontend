@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import {Container, Row, Col} from 'react-bootstrap';
 import MainNavigation from './components/navigation/mainNavigation';
 import {Route, Switch, withRouter } from 'react-router-dom';
-
+import IdleTimer from 'react-idle-timer';
 import SignupForm from './containers/signup/signup';
 import Dashboard from './containers/dashboard/dashboard';
 import CreateBeneficiary from './containers/beneficiary/createBeneficiary/createBeneficiary';
 import BeneficiaryList from './containers/beneficiary/beneficiaryList';
-import BeneficiaryListRow from './containers/beneficiary/beneficiaryListRowDisplay';
+import AddBeneficiary from './containers/beneficiary/collectbeneficiaryInfo/collectbeneficiaryInfo'
 import BeneficiaryInfo from './containers/beneficiary/beneficiaryInfo/beneficiaryInfo';
 import Relationship from './containers/messages/relationship/relationship';
 import MessageType from './containers/messages/messageType/messageType';
@@ -21,7 +21,9 @@ import './App.css';
 
 class App extends Component{
   state = {
-    isAuth: false
+    isAuth: false,
+    idleTimer : null
+
   }
   componentDidMount(){
     const token = localStorage.getItem('token');    
@@ -92,6 +94,12 @@ class App extends Component{
         })
       break
     }
+  }
+
+  onIdle(e) {
+    this.logoutHandler()
+    console.log('user is idle', e)
+    console.log('last active', this.idleTimer.getLastActiveTime())
   }
   render(){
     
@@ -173,23 +181,35 @@ class App extends Component{
                 exact
                 render = { props => (<WrittenMessage {...props} token={this.state.token} storeMessageStates={this.handleMessageStates}></WrittenMessage>)}></Route>
 
+              <Route 
+                path="/createMessage/addBeneficiary" 
+               
+                render = { props => (<AddBeneficiary {...props} token={this.state.token} storeMessageStates={this.handleMessageStates}></AddBeneficiary>)}></Route>
+
         </Switch>
       )
   }
   
     return(
       
-        <Container>        
+        <Container>
+           <IdleTimer
+              ref={ref => { this.idleTimer = ref }}
+              element={document}
+            
+              onIdle={(e) =>this.onIdle(e)}
+              
+              timeout={1000 * 60 * 15} />   
+
           <MainNavigation 
               isAuth={this.state.isAuth} 
               onLogout={this.logoutHandler}
               />
 
-          <Row>
+         
                        
                 {routes}
-           
-          </Row>
+          
           </Container>    
       
     )

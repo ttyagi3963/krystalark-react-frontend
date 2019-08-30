@@ -1,5 +1,5 @@
 import React , {Component, Fragment} from 'react';
-import { Col, Form, Button} from 'react-bootstrap';
+import { Col, Form, Button, Row} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import BeneficiaryListRow from '../beneficiary/beneficiaryListRowDisplay';
 import MessageList from '../messages/messageList/messageList';
@@ -7,6 +7,7 @@ import './dashboard.css';
 import Silhoutte from '../../static/img/m.jpg';
 import UsageProgress from '../../components/userProgress/userProgress'
 import Modal from '../../utilities/modal'
+
 
 class Dashboard extends Component{
    state = {
@@ -99,6 +100,7 @@ class Dashboard extends Component{
       
        return(
        <Fragment>
+           <Row>
            <Col xs={12} sm={3} className="LeftSide">
                 <div className="ProfilePicBlock">
                     <div className="ProfilePic">
@@ -198,7 +200,7 @@ class Dashboard extends Component{
                            <button type="submit" className="btn btn-primary">Upload</button>    
                        </Form>
                 </Modal>          
-           
+         </Row>  
        </Fragment>
        )
    }

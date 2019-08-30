@@ -1,0 +1,25 @@
+.MessageListContainer .Header{
+    text-align: center;
+    font-weight: 500;
+    padding-top:10px;
+    padding-bottom:10px;
+    border-bottom:1px solid #ddd;
+    border-top:1px solid #ddd;
+    background:#dedede
+  
+}
+.MessageListContainer .Header div{
+    border-right:1px solid #333;
+   
+}
+.MessageListContainer .DataRow div{
+    border-right:1px solid #ddd;
+}
+.MessageListContainer .Header div:last-child,
+.MessageListContainer .DataRow div:last-child{
+    border-right:0px solid #ddd;
+}
+.MessageListContainer.container{
+    padding-left:0px;
+    padding-right:0px;
+}
