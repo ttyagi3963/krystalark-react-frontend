@@ -1,5 +1,5 @@
 import React from 'react';
-import { Steps} from 'antd/';
+import { Steps} from 'antd';
 import 'antd/dist/antd.css'
 
 

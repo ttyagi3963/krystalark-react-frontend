@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import queryString from 'query-string';
 import { Col, Row} from 'react-bootstrap';
 import MessageSteps from '../../../components/steps/steps'
-import {  Avatar , Popover} from 'antd'
+import {  Avatar , Alert} from 'antd'
 import './collectbeneficiaryInfo.css';
 
 
@@ -10,34 +10,73 @@ import './collectbeneficiaryInfo.css';
 
 class CollectbeneficiaryInfo extends Component{
 
-    state={}
+    state={
+        isEmailAvailable: '',
+        isSsnAvailable: '',
+        isPhoneAvailable: '',
+        isAddressAvailable:''
+
+    }
 
     componentDidMount=(props)=>{
-        const bId= queryString.parse(this.props.location.search).bId
-        const mId= queryString.parse(this.props.location.search).mId
+        // const bId= queryString.parse(this.props.location.search).bId
+        // this.setState({bId: bId})
+        // const mId= queryString.parse(this.props.location.search).mId
 
-        fetch("http://localhost:8080/beneficiary/"+bId,{
-            method:'GET',
-            headers:{
-                'authorization': ' Bearer '+this.props.token,
+        // fetch("http://localhost:8080/beneficiary/"+bId,{
+        //     method:'GET',
+        //     headers:{
+        //         'authorization': ' Bearer '+this.props.token,
             
-            }
-        })
-        .then(result =>{
-            if(result.status !==  200 && result.status !== 201){
-                throw new Error('Could not get list')
-            }
-            return result.json();
-        })
-        .then(b =>{
-            console.log(b)
-            this.setState({beneficiary: b.beneficiary})
+        //     }
+        // })
+        // .then(result =>{
+        //     if(result.status !==  200 && result.status !== 201){
+        //         throw new Error('Could not get list')
+        //     }
+        //     return result.json();
+        // })
+        // .then(b =>{
+        //     console.log(b)
+        //     this.setState({beneficiary: b.beneficiary})
            
-        })
-        .catch(err =>{
-            console.log(err)
-        })
+        // })
+        // .catch(err =>{
+        //     console.log(err)
+        // })
         
+    }
+
+    fieldSaverHandler = (event,field) =>{
+       
+        if(this.state.email){
+            const formData= new FormData();
+            formData.append("email", this.state.email)
+            formData.append("bId", this.state.bId)
+
+            fetch("http://localhost:8080/beneficiary/updateBeneficiary",{
+                method:'POST',
+                headers:{
+                    'authorization': ' Bearer '+this.props.token,
+                
+                },
+                body: formData
+            })
+            .then(result =>{
+                if(result.status !==  500 ){
+                    throw new Error('Unable to Update beneficiary')
+                }
+                return result.json();
+            })
+            .then(resData =>{
+                console.log(resData)
+                
+               
+            })
+            .catch(err =>{
+                console.log(err)
+            })
+        }
     }
 
    
@@ -57,32 +96,64 @@ class CollectbeneficiaryInfo extends Component{
     }
 
     buttonClickHandler =(event, field,flag) =>{
+       console.log("flag="+flag+" field="+field)
         switch(field){
             case "email":
-                this.setState({isEmailAvailable: flag})
-                if(!flag){
+                this.setState({isEmailAvailable: flag},function(){
+                    if(!flag){
+                      
+                        document.getElementById('EmailAlert').classList.remove("hidden") ;
+                        document.getElementById('emailQuestion').classList.add("hidden");
+                        document.getElementById('emailInfoBox').classList.add("hidden")
+                        document.getElementById('emailSave').classList.add("hidden")
+                        document.getElementById('ssnBox').classList.remove("fadedOut");
+                        
+                     }                
+                
+                })
+                  
                    
-                    var s = document.getElementById('emailBox').style;
-                    s.opacity = 1;
-                    (function fade()
-                        {(s.opacity-=.1)<0?s.display="none":setTimeout(fade,100)})();
-                        document.getElementById("ssnBox").classList.add("fadeIn")
-                    
-                }
 
                 break;
             
             case "ssn":
-                        this.setState({isSsnAvailable: flag})
-                        if(!flag){
-                   
-                            var s = document.getElementById('ssnBox').style;
-                            s.opacity = 1;
-                            (function fade(){(s.opacity-=.1)<0?s.display="none":setTimeout(fade,100)})();
-        
-                            
-                        }
+                        this.setState({isSsnAvailable: flag},function(){
+                            if(!flag){
+                                
+                                document.getElementById('ssnAlert').classList.remove("hidden") ;
+                                document.getElementById('ssnQuestion').classList.add("hidden");
+                                document.getElementById('ssnInfoBox').classList.add("hidden")
+                                document.getElementById('ssnSave').classList.add("hidden")
+                                document.getElementById('phoneBox').classList.remove("fadedOut");
+                                
+                            }
+                        })
+                        
                         break;
+           case "phone":
+                            this.setState({isPhoneAvailable: flag}, function(){
+                                if(!flag){
+                                
+                                    document.getElementById('phoneAlert').classList.remove("hidden") ;
+                                    document.getElementById('phoneQuestion').classList.add("hidden");
+                                    document.getElementById('phoneInfoBox').classList.add("hidden")
+                                    document.getElementById('phoneSave').classList.add("hidden")
+                                    document.getElementById('addressBox').classList.remove("fadedOut");
+                                    
+                                }
+                            })
+                          
+                            break;
+            case "add":
+                                this.setState({isAddressAvailable: flag})
+                                if(!flag){
+                           
+                                    document.getElementById('addressBox').classList.add("fadedOut");
+                                    //document.getElementById('addressBox').classList.remove("fadedOut");
+                
+                                    
+                                }
+                                break;
         }
     }
   render(){
@@ -122,8 +193,8 @@ class CollectbeneficiaryInfo extends Component{
                     </div>
                </Col>
                <Col xs={12} sm={9}>
-               <div className="QuestionBox" id="emailBox">
-                    <h6>Do You know {bName}' email?</h6>
+               <div className="QuestionBox fader" id="emailBox">
+                    <h6><Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>1</Avatar> Do You know {bName}' email?</h6>
 
                     <div className={emailClass.join(' ')} style={{marginTop:'20px'}}> 
                         <label htmlFor="email">Email</label>
@@ -137,23 +208,35 @@ class CollectbeneficiaryInfo extends Component{
                                         
                                         >   
                                      </input>
+                                    
+                    
                     </div>
-                    <div className={this.state.isEmailAvailable?'form-group hidden': 'form-group'}>
+                    <div id="EmailAlert" className="hidden">
+                                <Alert
+                                        message="Email Not Available"
+                                        description="You can always add the email later"
+                                        type="warning"
+                                        showIcon
+                                       
+                                                    />
+                    </div>
+                   
+                    <div id="emailQuestion" className={this.state.isEmailAvailable?'form-group hidden': 'form-group'}>
                             <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'email',false)}>No, I dont!</button>&nbsp;
                             <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'email',true)}>Yes, I have it!</button>
                      </div>
-                     <div className={!this.state.isEmailAvailable?'form-group hidden': 'form-group'}>
-                            <button className="btn btn-primary" onClick ={(event)=>this.fieldSaverHandler(event,'email')}>Save Email</button>&nbsp;
+                     <div id="emailSave" className={!this.state.isEmailAvailable?'form-group hidden': 'form-group'}>
+                            <button className="btn btn-primary" onClick ={(event)=>this. fieldSaverHandler(event,'email')}>Save Email</button>&nbsp;
                             <a href="javascript://"  onClick ={(event)=>this.buttonClickHandler(event,'email',false)} style={{fontSize:"13px"}}>I cant remember!</a>
                      </div>
-                     <div className="InfoBox">
+                     <div id="emailInfoBox" className="InfoBox">
                                    <strong>Why do we need {bName}'s email?</strong>
                                    <p>In order to contact your beneficiary that there is a message waiting for them</p>
                                </div>
                </div>
 
-               <div className="QuestionBox hidden" id="ssnBox">
-                    <h6>No Problem! How about {bName}' Social Security Number?</h6>
+               <div className="QuestionBox fader fadedOut" id="ssnBox">
+                    <h6><Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>2</Avatar> No Problem! How about {bName}' Social Security Number?</h6>
 
                     <div className={ssnClass.join(' ')} style={{marginTop:'20px'}}> 
                         <label htmlFor="ssn">Social Security Number</label>
@@ -168,22 +251,32 @@ class CollectbeneficiaryInfo extends Component{
                                         >   
                                      </input>
                     </div>
-                    <div className={this.state.isSsnAvailable?'form-group hidden': 'form-group'}>
+                    <div id="ssnAlert" className="hidden">
+                                <Alert
+                                        message="SSN Not Available"
+                                        description="You can always add the SSN later"
+                                        type="warning"
+                                        showIcon
+                                       
+                                                    />
+                    </div>
+                   
+                    <div id="ssnQuestion" className={this.state.isSsnAvailable?'form-group hidden': 'form-group'}>
                             <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'ssn',false)}>No, I dont!</button>&nbsp;
                             <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'ssn',true)}>Yes, I have it!</button>
                      </div>
-                     <div className={!this.state.isSsnAvailable?'form-group hidden': 'form-group'}>
+                     <div id="ssnSave" className={!this.state.isSsnAvailable?'form-group hidden': 'form-group'}>
                             <button className="btn btn-primary" onClick ={(event)=>this.fieldSaverHandler(event,'ssn')}>Save Email</button>&nbsp;
                             <a href="javascript://"  onClick ={(event)=>this.buttonClickHandler(event,'ssn',false)} style={{fontSize:"13px"}}>I cant remember!</a>
                      </div>
-                     <div className="InfoBox">
+                     <div id="ssnInfoBox" className="InfoBox">
                                    <strong>Why do we need {bName}'s SSN?</strong>
                                    <p>In order to contact your beneficiary that there is a message waiting for them</p>
                                </div>
                </div>
 
-               <div className="QuestionBox  hidden" id="phoneBox">
-                    <h6>Ok! How about {bName}' Phone Number?</h6>
+               <div className="QuestionBox fader fadedOut" id="phoneBox">
+                    <h6><Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>3</Avatar> Ok! How about {bName}'s Phone Number?</h6>
 
                     <div className={phoneClass.join(' ')} style={{marginTop:'20px'}}> 
                         <label htmlFor="phone">Phone</label>
@@ -197,23 +290,33 @@ class CollectbeneficiaryInfo extends Component{
                                         
                                         >   
                                      </input>
+
                     </div>
-                    <div className={this.state.isEmailAvailable?'form-group hidden': 'form-group'}>
+                    <div id="phoneAlert" className="hidden">
+                                <Alert
+                                        message="Phone Number Not Available"
+                                        description="You can always add the Phone later"
+                                        type="warning"
+                                        showIcon
+                                       
+                                                    />
+                    </div>
+                    <div id="phoneQuestion" className={this.state.isPhoneAvailable?'form-group hidden': 'form-group'}>
                             <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'phone',false)}>No, I dont!</button>&nbsp;
                             <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'phone',true)}>Yes, I have it!</button>
                      </div>
-                     <div className={!this.state.isEmailAvailable?'form-group hidden': 'form-group'}>
+                     <div id="phoneSave" className={!this.state.isPhoneAvailable?'form-group hidden': 'form-group'}>
                             <button className="btn btn-primary" onClick ={(event)=>this.fieldSaverHandler(event,'phone')}>Save Phone</button>&nbsp;
                             <a href="javascript://"  onClick ={(event)=>this.buttonClickHandler(event,'phone',false)} style={{fontSize:"13px"}}>I cant remember!</a>
                      </div>
-                     <div className="InfoBox">
+                     <div id="phoneInfoBox" className="InfoBox">
                                    <strong>Why do we need {bName}'s phone number?</strong>
                                    <p>In order to contact your beneficiary that there is a message waiting for them</p>
                                </div>
                </div>
 
-               <div className="QuestionBox  hidden" id="addressBox">
-                    <h6>Do you know {bName}' address?</h6>
+               <div className="QuestionBox  fader fadedOut" id="addressBox">
+                    <h6><Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>4</Avatar> Do you know {bName}'s address?</h6>
 
                     <div className={addressClass.join(' ')} style={{marginTop:'20px'}}> 
                         <label htmlFor="phone">Phone</label>
@@ -250,8 +353,8 @@ class CollectbeneficiaryInfo extends Component{
                                                     </select>
                     </div>
                     <div className={this.state.isAddressAvailable?'form-group hidden': 'form-group'}>
-                            <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'add',false)}>No, I dont!</button>&nbsp;
-                            <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'add',true)}>Yes, I have it!</button>
+                            <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'add1',false)}>No, I dont!</button>&nbsp;
+                            <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'add1',true)}>Yes, I have it!</button>
                      </div>
                      <div className={!this.state.isAddressAvailable?'form-group hidden': 'form-group'}>
                             <button className="btn btn-primary" onClick ={(event)=>this.fieldSaverHandler(event,'add')}>Save Address</button>&nbsp;

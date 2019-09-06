@@ -1,10 +1,23 @@
 .RecipientContainer{
     margin-top:40px
 }
-.RecipientContainer .fadeIn{
-    opacity:1;
-    width:100px;
-    height:100px;
-    transition: width 0.5s, height 0.5s, opacity 0.5s 0.5s;
 
+
+.fader {
+    -moz-transition: opacity 0.7s linear;
+    -o-transition: opacity 0.7s linear;
+    -webkit-transition: opacity 0.7s linear;
+    transition: opacity 0.7s linear;
 }
+
+.fader.fadedOut {
+    opacity: 0;
+}
+.QuestionBox{
+    margin-top:40px
+}
+.QuestionBox .form-group, #emailInfoBox{
+    margin-left:50px
+}
+
+
