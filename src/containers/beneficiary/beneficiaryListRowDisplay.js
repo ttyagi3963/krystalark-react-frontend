@@ -29,7 +29,7 @@ const DisplayListInRow =(props) =>{
                                         theme="twoTone" 
                                         twoToneColor="#eb2f96" 
                                         text="View Profile" 
-                                        linkTo={"/beneficiary/"+item._id}
+                                        linkTo={"/beneficiary/profile/"+item._id}
                                         
                                         />,
                                     <IconText 

@@ -2,7 +2,9 @@ import React, { Component, Fragment } from 'react'
 import queryString from 'query-string';
 import { Col, Row} from 'react-bootstrap';
 import MessageSteps from '../../../components/steps/steps'
-import {  Avatar , Alert} from 'antd'
+import {  Avatar , Alert, Spin} from 'antd'
+
+import AskForEmail from '../askQuestions/askEmail/askEmail'
 import './collectbeneficiaryInfo.css';
 
 
@@ -14,47 +16,51 @@ class CollectbeneficiaryInfo extends Component{
         isEmailAvailable: '',
         isSsnAvailable: '',
         isPhoneAvailable: '',
-        isAddressAvailable:''
+        isAddressAvailable:'',
+        showEmailLoader: false
 
     }
 
     componentDidMount=(props)=>{
-        // const bId= queryString.parse(this.props.location.search).bId
-        // this.setState({bId: bId})
-        // const mId= queryString.parse(this.props.location.search).mId
+        const bId= queryString.parse(this.props.location.search).bId
+        this.setState({bId: bId})
+        const mId= queryString.parse(this.props.location.search).mId
 
-        // fetch("http://localhost:8080/beneficiary/"+bId,{
-        //     method:'GET',
-        //     headers:{
-        //         'authorization': ' Bearer '+this.props.token,
+        fetch("http://localhost:8080/beneficiary/"+bId,{
+            method:'GET',
+            headers:{
+                'authorization': ' Bearer '+this.props.token,
             
-        //     }
-        // })
-        // .then(result =>{
-        //     if(result.status !==  200 && result.status !== 201){
-        //         throw new Error('Could not get list')
-        //     }
-        //     return result.json();
-        // })
-        // .then(b =>{
-        //     console.log(b)
-        //     this.setState({beneficiary: b.beneficiary})
+            }
+        })
+        .then(result =>{
+            if(result.status !==  200 && result.status !== 201){
+                throw new Error('Could not get list')
+            }
+            return result.json();
+        })
+        .then(b =>{
+            console.log(b)
+            this.setState({beneficiary: b.beneficiary})
            
-        // })
-        // .catch(err =>{
-        //     console.log(err)
-        // })
+        })
+        .catch(err =>{
+            console.log(err)
+        })
         
     }
 
-    fieldSaverHandler = (event,field) =>{
+    
+    ssnSaverHandler = (event,field) =>{
        
-        if(this.state.email){
+        if(this.state.ssn){
+            this.setState({showSsnLoader: true})
             const formData= new FormData();
-            formData.append("email", this.state.email)
+            
             formData.append("bId", this.state.bId)
-
-            fetch("http://localhost:8080/beneficiary/updateBeneficiary",{
+            formData.append("ssn", this.state.ssn)    
+            
+            fetch("http://localhost:8080/beneficiary/updateBeneficiarySsn",{
                 method:'POST',
                 headers:{
                     'authorization': ' Bearer '+this.props.token,
@@ -63,13 +69,51 @@ class CollectbeneficiaryInfo extends Component{
                 body: formData
             })
             .then(result =>{
-                if(result.status !==  500 ){
+                this.setState({showSsnLoader: false})
+                if(result.status ===  500 ){
                     throw new Error('Unable to Update beneficiary')
                 }
                 return result.json();
             })
             .then(resData =>{
                 console.log(resData)
+                // this.setState({email})
+                
+               
+            })
+            .catch(err =>{
+                console.log(err)
+            })
+        }
+    }
+
+    emailSaverHandler = (event,field) =>{
+       
+        if(this.state.email){
+            this.setState({showEmailLoader: true})
+            const formData= new FormData();
+            
+            formData.append("bId", this.state.bId)
+            formData.append("email", this.state.email)    
+            
+            fetch("http://localhost:8080/beneficiary/updateBeneficiaryEmail",{
+                method:'POST',
+                headers:{
+                    'authorization': ' Bearer '+this.props.token,
+                
+                },
+                body: formData
+            })
+            .then(result =>{
+                this.setState({showEmailLoader: false})
+                if(result.status ===  500 ){
+                    throw new Error('Unable to Update beneficiary')
+                }
+                return result.json();
+            })
+            .then(resData =>{
+                console.log(resData)
+                // this.setState({email})
                 
                
             })
@@ -90,6 +134,10 @@ class CollectbeneficiaryInfo extends Component{
             case 'ssn':
                 this.setState({ssn:inputValue})
                 break;
+
+            case 'phone':
+                    this.setState({phone:inputValue})
+                    break;
         }
        
     
@@ -162,9 +210,7 @@ class CollectbeneficiaryInfo extends Component{
           bName =this.state.beneficiary.name
       }
 
-      let emailClass=['form-group', 'hidden']
-      if(this.state.isEmailAvailable)
-        emailClass= ['form-group']
+     
 
         let ssnClass=['form-group', 'hidden']
         if(this.state.isSsnAvailable)
@@ -193,48 +239,10 @@ class CollectbeneficiaryInfo extends Component{
                     </div>
                </Col>
                <Col xs={12} sm={9}>
-               <div className="QuestionBox fader" id="emailBox">
-                    <h6><Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>1</Avatar> Do You know {bName}' email?</h6>
 
-                    <div className={emailClass.join(' ')} style={{marginTop:'20px'}}> 
-                        <label htmlFor="email">Email</label>
-                                    
-                                    <input 
-                                        type="email" 
-                                        className="form-control" 
-                                        name="email" 
-                                        id="email" 
-                                        onChange={(event)=>this.inputChangeHandler(event,'email')}
-                                        
-                                        >   
-                                     </input>
-                                    
-                    
-                    </div>
-                    <div id="EmailAlert" className="hidden">
-                                <Alert
-                                        message="Email Not Available"
-                                        description="You can always add the email later"
-                                        type="warning"
-                                        showIcon
-                                       
-                                                    />
-                    </div>
-                   
-                    <div id="emailQuestion" className={this.state.isEmailAvailable?'form-group hidden': 'form-group'}>
-                            <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'email',false)}>No, I dont!</button>&nbsp;
-                            <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'email',true)}>Yes, I have it!</button>
-                     </div>
-                     <div id="emailSave" className={!this.state.isEmailAvailable?'form-group hidden': 'form-group'}>
-                            <button className="btn btn-primary" onClick ={(event)=>this. fieldSaverHandler(event,'email')}>Save Email</button>&nbsp;
-                            <a href="javascript://"  onClick ={(event)=>this.buttonClickHandler(event,'email',false)} style={{fontSize:"13px"}}>I cant remember!</a>
-                     </div>
-                     <div id="emailInfoBox" className="InfoBox">
-                                   <strong>Why do we need {bName}'s email?</strong>
-                                   <p>In order to contact your beneficiary that there is a message waiting for them</p>
-                               </div>
-               </div>
-
+               <AskForEmail bName={bName}  state={this.state} buttonClickHandler ={this.buttonClickHandler} emailSaverHandler={this.emailSaverHandler} inputChangeHandler={this.inputChangeHandler}></AskForEmail>
+               
+               
                <div className="QuestionBox fader fadedOut" id="ssnBox">
                     <h6><Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>2</Avatar> No Problem! How about {bName}' Social Security Number?</h6>
 
@@ -266,7 +274,7 @@ class CollectbeneficiaryInfo extends Component{
                             <button className="btn btn-primary" onClick ={(event)=>this.buttonClickHandler(event,'ssn',true)}>Yes, I have it!</button>
                      </div>
                      <div id="ssnSave" className={!this.state.isSsnAvailable?'form-group hidden': 'form-group'}>
-                            <button className="btn btn-primary" onClick ={(event)=>this.fieldSaverHandler(event,'ssn')}>Save Email</button>&nbsp;
+                            <button className="btn btn-primary" onClick ={(event)=>this.ssnSaverHandler(event,'ssn')}>Save SSN</button>&nbsp;
                             <a href="javascript://"  onClick ={(event)=>this.buttonClickHandler(event,'ssn',false)} style={{fontSize:"13px"}}>I cant remember!</a>
                      </div>
                      <div id="ssnInfoBox" className="InfoBox">

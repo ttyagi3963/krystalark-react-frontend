@@ -151,7 +151,7 @@ class App extends Component{
                 render = { props => (<CreateBeneficiary token={this.state.token}></CreateBeneficiary>)}>
              </Route>
              <Route 
-                path="/beneficiary/:bId" 
+                path="/beneficiary/profile/:bId" 
                 exact
                 render = { props => (<BeneficiaryInfo {...props} token={this.state.token}></BeneficiaryInfo>)}>
              </Route>
