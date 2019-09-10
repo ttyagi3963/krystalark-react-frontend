@@ -5,6 +5,7 @@ import MessageSteps from '../../../components/steps/steps'
 import {  Avatar , Alert, Spin} from 'antd'
 
 import AskForEmail from '../askQuestions/askEmail/askEmail'
+import EmailAlreadyPresent from '../askQuestions/askEmail/EmailAlreadyPresent'
 import './collectbeneficiaryInfo.css';
 
 
@@ -13,6 +14,9 @@ import './collectbeneficiaryInfo.css';
 class CollectbeneficiaryInfo extends Component{
 
     state={
+        beneficiary:{
+            email:''
+        },
         isEmailAvailable: '',
         isSsnAvailable: '',
         isPhoneAvailable: '',
@@ -41,7 +45,9 @@ class CollectbeneficiaryInfo extends Component{
         })
         .then(b =>{
             console.log(b)
-            this.setState({beneficiary: b.beneficiary})
+            this.setState({beneficiary: b.beneficiary}, function(){
+                console.log(this.state.beneficiary.email)
+            })
            
         })
         .catch(err =>{
@@ -127,10 +133,7 @@ class CollectbeneficiaryInfo extends Component{
     inputChangeHandler=(event, field)=>{
         let inputValue = event.target.value
         switch(field){
-            case 'email':
-                    this.setState({email: inputValue})
-            break;
-
+         
             case 'ssn':
                 this.setState({ssn:inputValue})
                 break;
@@ -239,8 +242,12 @@ class CollectbeneficiaryInfo extends Component{
                     </div>
                </Col>
                <Col xs={12} sm={9}>
-
-               <AskForEmail bName={bName}  state={this.state} buttonClickHandler ={this.buttonClickHandler} emailSaverHandler={this.emailSaverHandler} inputChangeHandler={this.inputChangeHandler}></AskForEmail>
+                {
+                    this.state.beneficiary.email.length>2  ? <EmailAlreadyPresent /> 
+                    : 
+                    <AskForEmail bName={bName} token={this.state.token} state={this.state} nextSlide="ssnBox" beneficiary></AskForEmail>
+                }
+               
                
                
                <div className="QuestionBox fader fadedOut" id="ssnBox">
